@@ -23,7 +23,7 @@
     <style>
 
       .mybackuground {
-        background-image: url('{% static "milenio/abelha.jpg" %}') ;
+        background-image: url('{% static "financas/abelha.jpg" %}') ;
         /*background-image: url('{% static "flores.jpg" %}') ;*/
         background-color:   transparent;
         background-repeat: no-repeat;
@@ -149,7 +149,7 @@
     <div>
       <ul class="nav bg-secondary text-white">
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url "milenio:index" %}">Início</a> 
+          <a class="nav-link text-white" href="{% url "financas:index" %}">Início</a> 
         </li>
 
         <li class="nav-item text-white">
@@ -178,7 +178,9 @@
         <tr>
           <td>
             <div class="list-group">
-              <a href="{% url 'milenio:cadastro_empresa' %}" class="btn btn-sm btn-primary px-6"> Gestão de cadastro</a>
+            
+              <a href="{% url 'financas:cadastro_candidato' %}" class="btn btn-sm btn-primary px-6"> Gestão de cadastro</a>
+
             </div>
           </td>
         </tr>

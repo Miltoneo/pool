@@ -151,7 +151,7 @@
     <div>
       <ul class="nav bg-secondary text-white">
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url "milenio:index" %}">Início</a> 
+          <a class="nav-link text-white" href="{% url "financas:index" %}">Início</a> 
         </li>
 
         <li class="nav-item text-white">
@@ -181,12 +181,10 @@
         <tr>
           <td>
             <div class="list-group">
-              <a href={% url 'milenio:faturamento' fornecedor_id=request.session.empresa_id mes=1%} class="btn btn-sm btn-primary px-6">Faturamento </a>
-              <a href={% url 'milenio:despesas'%} class="btn btn-sm btn-primary px-6">Despesa </a>
-              <a href={% url 'milenio:relatorios'%} class="btn btn-sm btn-primary px-6">Balanco </a>
-              <a href={% url 'milenio:apuracao_csll_irpj'%} class="btn btn-sm btn-primary px-6">Apuração CSLL/IRPJ </a>
-              <a href={% url 'milenio:apuracao_issqn'%} class="btn btn-sm btn-primary px-6">Apuração ISSQN </a>
-
+              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Receitas</a>
+              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Despesas</a>
+              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Balanço</a>
+              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Gestão de cadastro</a>
             </div>
           </td>
         </tr>

@@ -25,7 +25,7 @@ def index(request):
   mes = now.strftime("%m")
   msg =  ''
 
-"""  
+
   if 'msg' in request.session:
     msg = request.session['msg_status']
   else:
@@ -53,15 +53,14 @@ def index(request):
   
   else:  
     request.session['msg_status'] = 'Bem-vindo meu amor!!!'
-    qryEmpresas = Pjuridica.objects.all()
+    ds_candidatos= Candidato.objects.all()
 
-    template = loader.get_template('milenio/index.html')
+    template = loader.get_template('financas/index.html')
     context = {
-                'lstEmpresas'   : qryEmpresas,
+                'lst_candidatos'   : ds_candidatos,
                 'user'          : request.user,
                 'ano_fiscal'    : ano_fiscal,
                 'msg'           : msg + 'mes:' + str(mes)
               }
 
     return HttpResponse(template.render(context, request))
-"""

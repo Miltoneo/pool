@@ -1,0 +1,85 @@
+{% extends "financas/template_page_navegacao.html" %}
+{% load static %}
+
+{% block bl_script %} 
+<script type="text/javascript">
+
+  function myFunction() {
+    //var x = document.getElementById("mySelect").value;
+    //document.getElementById("demo").innerHTML = "You selected: " + x;
+    //alert("MUDEI O ANO NO HTML"  );
+    ano_fiscal.click()
+  }
+</script>
+
+{% endblock %}
+
+
+{% block title %}
+  Milenio
+{% endblock %}
+
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h1>S3C - Sistema de CONTROLE DE CONTAS CANDIDATOS- versão beta</h1>
+
+  <form method="post">{% csrf_token %}
+    <h3>Ano Fiscal:   
+
+       <select id="mySelect" name="mySelect" onchange="myFunction()"> 
+        <option value={{ano_fiscal}} selected> {{ano_fiscal}}</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+      </select>
+    </h3>
+    <input type="submit" value="submit" name = "ano_fiscal" id="ano_fiscal" hidden />
+   </form>   
+
+
+
+{% endblock %}
+
+{% block content %}
+
+  <div class="mybackuground">
+      <!-- main -->
+    <div class="main">
+ 
+        <table style="background-color:#e5e5e5;"> 
+          <tr>
+            <td>
+
+              <!--<img src="{% static 'milenio/flores.png' %}" alt="flores"> -->
+              <p> </p>
+              <a> Candidatos cadastradas</a>
+              <table>
+                <tr>
+                  <th rowspan="1">Id</th>          
+                  <th rowspan="1">CNPJ</th>
+                  <th rowspan="1">Empresa </th>                  
+                </tr>
+        
+                {% for candidato in lst_candidatos %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ candidato.CNPJ}}</td>    
+                    <!--<td><a href={% url 'milenio:apuracao_mes' num_mes=1%}> {{ candidato.name}}</td>--> 
+                    <td> {{ candidato.nome}}</td> 
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+
+        <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">©  {% now 'Y'  %}  </h3> copyright cabatatu</div>
+    </div>
+  </div>
+
+
+{% endblock %}

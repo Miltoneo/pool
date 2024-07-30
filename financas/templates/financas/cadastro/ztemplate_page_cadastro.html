@@ -130,7 +130,7 @@
     <div>
       <ul class="nav bg-secondary text-white">
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url "milenio:index" %}">Início</a> 
+          <a class="nav-link text-white" href="{% url "financas:index" %}">Início</a> 
         </li>
 
         <li class="nav-item text-white">
@@ -160,12 +160,8 @@
         <tr>
           <td>
             <div class="list-group">
-              <a href="{% url 'milenio:cadastro_empresa'%}" class="btn btn-sm btn-primary px-6">Cadastro de Empresas  </a>
-              <a href="{% url 'milenio:cadastro_pessoa' %}" class="btn btn-sm btn-primary px-6"> Cadastro de sócios </a>
-              <a href="{% url 'milenio:cadastro_societario'%}" class="btn btn-sm btn-primary px-6"> Vínculo de sócios </a>
-              <a href="{% url 'milenio:cadastro_alicotas'%}" class="btn btn-sm btn-primary px-6"> Cadastro de Alicotas </a>   
-              <a href="{% url 'milenio:cadastro_despesa_grupo'%}" class="btn btn-sm btn-primary px-6"> Cadastro de grupo de despesas </a>  
-              <a href="{% url 'milenio:cadastro_despesa_item'%}" class="btn btn-sm btn-primary px-6"> Cadastro de item de despesa </a>    
+              <a href="{% url 'financas:cadastro_candidato'%}" class="btn btn-sm btn-primary px-6">Cadastro de candidato  </a>
+
             </div>
           </td>
         </tr>

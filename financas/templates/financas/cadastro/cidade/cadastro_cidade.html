@@ -1,0 +1,58 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Cadastro de cidades
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h1>Cadastro de cidades</h1>
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:cidade_incluir' %}"> Cadastrar cidade </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+
+
+        <table> 
+          <tr>
+            <td>
+              <a> cidades cadastradas</a>
+              <table>
+                <tr>
+                  <th rowspan="1">Id</th>          
+                  <th rowspan="1">Cidade </th> 
+                  <th rowspan="1">Estado</th>
+
+                </tr>
+        
+                {% for cidade in lst_cidades %}
+                  <tr>
+                    <td><a href= "{% url 'financas:cidade_excluir' cidade_id=cidade.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:cidade_editar' cidade_id=cidade.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td><a href= {% url 'financas:cidade_editar' cidade_id=cidade.id %}> {{ cidade.nome}}</td>    
+                    <td>{{ cidade.estado}}</td>
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© copyright cabatatu</div>
+    </div>
+  </div>
+
+
+{% endblock %}

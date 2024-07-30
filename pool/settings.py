@@ -42,6 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'financas',
     'bootstrap5',
+    'mathfilters',
+    'ckeditor',
+    'django_adsense_injector',
+    'django.contrib.sitemaps',
+    'django_extensions', 
+
 ]
 
 MIDDLEWARE = [
