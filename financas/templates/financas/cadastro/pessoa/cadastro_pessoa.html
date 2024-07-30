@@ -1,0 +1,56 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Cadastro de pessoas
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h1>Cadastro de pessoas</h1>
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:pessoa_incluir' %}"> Cadastrar pessoa </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <a> pessoas cadastradas</a>
+              <table>
+                <tr>
+                  <th rowspan="1">Id</th>          
+                  <th rowspan="1">pessoa </th> 
+                  <th rowspan="1">Estado</th>
+
+                </tr>
+        
+                {% for pessoa in lst_pessoas %}
+                  <tr>
+                    <td><a href= "{% url 'financas:pessoa_excluir' pessoa_id=pessoa.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:pessoa_editar' pessoa_id=pessoa.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td><a href= {% url 'financas:pessoa_editar' pessoa_id=pessoa.id %}> {{ pessoa.nome}}</td>    
+                    <td>{{ pessoa.estado}}</td>
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© copyright cabatatu</div>
+    </div>
+  </div>
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Cadastro de partido
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h1>Cadastro de partidos</h1>
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:partido_incluir' %}"> Cadastrar partido </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <a> partidos cadastradas</a>
+              <table>
+                <tr>
+                  <th rowspan="1">Id</th>     
+                  <th rowspan="1">Sigla</th>
+                  <th rowspan="1">Partido </th> 
+
+
+                </tr>
+        
+                {% for partido in lst_partidos %}
+                  <tr>
+                    <td><a href= "{% url 'financas:partido_excluir' partido_id=partido.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:partido_editar' partido_id=partido.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ partido.sigla}}</td>
+                    <td><a href= {% url 'financas:partido_editar' partido_id=partido.id %}> {{ partido.nome}}</td>    
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}

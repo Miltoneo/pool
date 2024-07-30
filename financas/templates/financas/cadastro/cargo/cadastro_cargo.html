@@ -1,0 +1,56 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Cadastro de cargos
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h1>Cadastro de cargos</h1>
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:cargo_incluir' %}"> Cadastrar cargo </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <a> cargos cadastradas</a>
+              <table>
+                <tr>
+                  <th rowspan="1">Id</th>          
+                  <th rowspan="1">cargo </th> 
+                  <th rowspan="1">Estado</th>
+
+                </tr>
+        
+                {% for cargo in lst_cargos %}
+                  <tr>
+                    <td><a href= "{% url 'financas:cargo_excluir' cargo_id=cargo.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:cargo_editar' cargo_id=cargo.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td><a href= {% url 'financas:cargo_editar' cargo_id=cargo.id %}> {{ cargo.nome}}</td>    
+                    <td>{{ cargo.estado}}</td>
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© copyright cabatatu</div>
+    </div>
+  </div>
+
+
+{% endblock %}

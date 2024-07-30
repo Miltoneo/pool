@@ -6,7 +6,7 @@
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
-  <h1>Cadastro de Pessoas</h1>
+  <h1>Cadastro</h1>
 {% endblock %}
 
 
@@ -28,36 +28,24 @@
             <td>
               <h5 class="my_h5"> Cadastros</a>
 
-              <table> 
-                <tr>
-                  <td>
-                    
                     <table> 
                       <tr>
                          <td>
                             <a href={% url 'financas:cadastro_cidade' %}  class="btn btn-primary btn-lg" role="button">Cadastrar cidade</a>
                           <td>
-                            <a href={% url 'financas:cadastro_main' %}  class="btn btn-primary btn-lg" role="button">Cadastrar pessoa</a>
+                            <a href={% url 'financas:cadastro_pessoa' %}  class="btn btn-primary btn-lg" role="button">Cadastrar pessoa</a>
                          <td>
-                            <a href={% url 'financas:cadastro_main' %}  class="btn btn-primary btn-lg" role="button">Cadastrar partido</a>
-
+                            <a href={% url 'financas:cadastro_partido' %}  class="btn btn-primary btn-lg" role="button">Cadastrar partido</a>
                       <tr>
                          <td>
                             <a href={% url 'financas:cadastro_candidato' %}  class="btn btn-primary btn-lg" role="button">Cadastrar candidato</a>
-
                          <td>
-                            <a href={% url 'financas:cadastro_main' %}  class="btn btn-primary btn-lg" role="button">Cadastrar grupo de despesas</a>
-
+                            <a href={% url 'financas:cadastro_cargo' %}  class="btn btn-primary btn-lg" role="button">Cadastrar grupo de despesas</a>
                          <td>
                             <a href={% url 'financas:cadastro_main' %}  class="btn btn-primary btn-lg" role="button">Cadastrar item de despesa</a>
-
                       <tr>
                         <td>
-                            <a href={% url 'financas:cadastro_main' %}  class="btn btn-primary btn-lg" role="button">Cadastrar cargos</a>  
-
-                  </td>
-                </tr>
-              </table>
+                            <a href={% url 'financas:cadastro_cargo' %}  class="btn btn-primary btn-lg" role="button">Cadastrar cargos</a>  
 
             </td>
           </tr>
