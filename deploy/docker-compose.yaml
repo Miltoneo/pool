@@ -1,0 +1,36 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    container_name: mysq_c
+    restart: always
+    volumes:
+      - /tmp/app/mysqld:/var/run/mysqld
+      - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE     : onkoto_data
+      MYSQL_USER         : onkoto_admin
+      MYSQL_PASSWORD     : admin
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test:  mysql --user=root --password=root -e "SELECT 1"
+      timeout: 10s
+      retries: 5
+
+  web:
+    image: miltoneo/myrepo:contabil
+    container_name: contabil_c
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    environment:
+      SECONDARY_SERVER_HOSTNAME: db
+      SECONDARY_DATABASE_NAME: onkoto_data
+      SECONDARY_DATABASE_USER: onkoto_admin
+      SECONDARY_DATABASE_PASSWORD: admin
+    ports:
+      - "8000:8000"
+    depends_on: 
+      db:
+        condition: service_healthy

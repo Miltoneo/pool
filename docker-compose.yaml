@@ -1,0 +1,40 @@
+version: '3'
+services:
+  db:
+    image: mysql:8
+    container_name: mysq_1
+    restart: always
+    volumes:
+      - /tmp/app/mysqld:/var/run/mysqld
+      - ./db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE     : prd_data
+      MYSQL_USER         : admin
+      MYSQL_PASSWORD     : admin
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test:  mysql --user=root --password=root -e "SELECT 1"
+      timeout: 10s
+      retries: 5
+
+  web:
+    build: .
+    container_name: pool_c
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    environment:
+      SECONDARY_SERVER_HOSTNAME   : localhost
+      SECONDARY_DATABASE_NAME     : prd_data
+      SECONDARY_DATABASE_USER     : admin
+      SECONDARY_DATABASE_PASSWORD : admin
+    volumes:
+      - .:/app
+      - /tmp/app/mysqld:/run/mysqld
+    ports:
+      - "8000:8000"
+    depends_on: 
+      db:
+        condition: service_healthy
+

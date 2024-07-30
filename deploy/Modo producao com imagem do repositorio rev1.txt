@@ -1,0 +1,23 @@
+Baixar a imagem do repositorio:
+image:miltoneo/myrepo:contabil
+
+Executar:
+Passo 1: login docker
+  c:>docker login
+user:miltoneo
+pass:mil031212
+
+Passo 2: Baixar imagem
+  C:\>docker pull miltoneo/myrepo:contabil
+
+Passo 3:renomear o arquivo: docker-composer-prd.yaml para docker-compose.yaml
+se necessário.
+
+Passo 2:
+Executar:
+c:>docker compose up
+
+Passo 3: 
+docker exec -it contabil_c python manage.py makemigrations 
+docker exec -it contabil_c python manage.py migrate 
+

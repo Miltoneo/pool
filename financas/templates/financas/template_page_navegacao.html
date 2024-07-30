@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-site-verification" content="bBW6t7so6dAw0kHfRhkAxcaQzosrQinyXFYoojcOWeg" />
+    
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load i18n %}
+    {% load adsense_tags %}
+  
+<!-- SECTION: SCRIPTS -->
+    {% block bl_script %} 
+    {% endblock %}
+    
+  <script 
+    async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0793490902348411"
+    crossorigin="anonymous">
+  </script>
+
+  <style>
+      /* Style the list inside the menu */
+      article {
+        float: left;
+        padding: 20px;
+        width: 70%;
+        background-color: #f1f1f1;
+      }
+      
+      /* Clear floats after the columns */
+      section::after {
+        content: '';
+        display: table;
+        clear: both;
+      }
+      
+      /* tables */
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        /*width: auto;*/
+      }
+      
+      td {
+        border: 1px solid #dddddd;
+
+        padding: 8px;
+        text-align: center;
+        /*miltinho*/
+
+      }
+
+      th {
+        border: 2px solid #a1a4a1;
+        padding: 8px;
+        text-align: center;
+        /*miltinho*/
+        background-color: #d8d9d8;
+      }
+
+      /*tr:nth-child(even) {*/
+      tr: {
+        background-color: #dddddd;
+      }
+      
+      /* página  principal*/
+      /* border*/
+      * {
+        box-sizing: border-box;
+      }
+      
+      /* menu*/
+      .menu {
+        float: left;
+        width: 10%;
+        height: 100%;
+        text-align: center;
+      }
+      
+      /* menu itens*/
+      .menu a {
+        background-color: #e5e5e5;
+        padding: 8px;
+        margin-top: 7px;
+        display: block;
+        width: 100%;
+        color: black;
+      }
+
+      /* main*/
+      .main {
+         /* float: left;*/
+        width: 100%;
+        padding: 0 5px;
+      }
+      
+      /* campo informação à direita */
+      .right {
+        background-color: #e5e5e5;
+        float: left;
+        width: 15%;
+        padding: 5px;
+        margin-top: 7px;
+        text-align: justify;
+      }
+      
+      /* For mobile phones: */
+      @media only screen and (max-width: 620px) {
+        /* For mobile phones: */
+        .menu,
+        .main,
+        .right {
+          width: 100%;
+        }
+      }
+
+      .msg {
+          background-color: hsl(120, 100%, 50%);
+      }
+
+      .my_h5 {
+        border:  1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+        /*miltinho*/
+      }
+  </style>
+
+    <!-- Titulo que aparece na barra do navegador  -->
+    <title>
+      {% block title %} 
+      {% endblock %}
+    </title>
+
+  </head>
+
+  <body>
+
+  {{ request.session.empresa }}
+
+    <!-- mensagens popup -->
+    {% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Barra menu Superior -->
+    <div>
+      <ul class="nav bg-secondary text-white">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url "milenio:index" %}">Início</a> 
+        </li>
+
+        <li class="nav-item text-white">
+          <a class="nav-link text-white" href="{% url 'admin:index' %}" class="btn btn-sm btn-primary px-6"> Admin</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-white" href= '#'> Contato</a>
+        </li>
+  
+        <li class="nav-item">
+          <a class="nav-link text-white" href= '#' >Quem somos</a>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- Descrição da Pagina e mensagens de debug -->
+    <div style="background-color:#e5e5e5;padding:15px;text-align:left;">
+      {% block titulo %}     
+      {% endblock %}
+    </div>
+
+    <!-- menu left --> 
+    <div class="menu">
+      <table> 
+        <tr>
+          <td>
+            <div class="list-group">
+              <a href={% url 'milenio:faturamento' fornecedor_id=request.session.empresa_id mes=1%} class="btn btn-sm btn-primary px-6">Faturamento </a>
+              <a href={% url 'milenio:despesas'%} class="btn btn-sm btn-primary px-6">Despesa </a>
+              <a href={% url 'milenio:relatorios'%} class="btn btn-sm btn-primary px-6">Balanco </a>
+              <a href={% url 'milenio:apuracao_csll_irpj'%} class="btn btn-sm btn-primary px-6">Apuração CSLL/IRPJ </a>
+              <a href={% url 'milenio:apuracao_issqn'%} class="btn btn-sm btn-primary px-6">Apuração ISSQN </a>
+
+            </div>
+          </td>
+        </tr>
+      </table> 
+    </div>           
+
+    <!-- Corpo da página -->
+    <div>
+    {% block content %} 
+
+
+    {% endblock %}
+    </div> 
+    <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">©  {% now 'Y'  %}  copyright cabatatu</div>
+
+    <!-- anuncio -->
+
+  </body>
+</html>
