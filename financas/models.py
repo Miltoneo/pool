@@ -1,15 +1,16 @@
 from django.db import models
 import datetime
 
-app_name = 'milenio'
+app_name = 'financas'
 
 #--------------------------------------------------------------
 # DEFINIÇÕES
 #--------------------------------------------------------------
+
 # Tipo do cargo
-ITEM_CARGO_VEREADOR = 1
-ITEM_CARGO_PREFEITO = 2 
-ITEM_CARGO_VICE_PREFEITO = 3 
+ITEM_CARGO_VEREADOR       = 1
+ITEM_CARGO_PREFEITO       = 2 
+ITEM_CARGO_VICE_PREFEITO  = 3 
 
 #------------------------------------------------
 class Cidade(models.Model):
@@ -66,54 +67,154 @@ class Limite_gasto_cargo(models.Model):
     return f"{self.cidade}"
 
 #------------------------------------------------
-class Candidato(models.Model):
-
-  pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=False)
+class Limite_gasto_cargo(models.Model):
+  
+  cidade  =  models.ForeignKey(Cidade, on_delete = models.CASCADE, unique=False)
   cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE, unique=False)
+  valor =   models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.cargo}"
-  
+    return f"{self.cidade}"
 
+
+#------------------------------------------------
+class Partido(models.Model):
+
+  sigla =  models.CharField(max_length=20, null=False, unique=True)
+  descricao =  models.CharField(max_length=20, null=False, unique= False)
+
+  def __str__(self):
+    return f"{self.sigla}"
+
+#------------------------------------------------
+class Rec_outros_candidatos(models.Model):
+
+  FEFC =   models.FloatField(null=False, default=0)
+  fundo_partidario =   models.FloatField(null=False, default=0)
+  outros =   models.FloatField(null=False, default=0)
+
+
+  def __str__(self):
+    return f"{self.id}"
+  
+#------------------------------------------------
+class Rec_partido_politico(models.Model):
+
+  FEFC =   models.FloatField(null=False, default=0)
+  outros =   models.FloatField(null=False, default=0)
+  doacoes_internet =   models.FloatField(null=False, default=0)
+
+  def __str__(self):
+    return f"{self.id}"
+
+#------------------------------------------------
+class Rec_outras_receitas(models.Model):
+
+  #- Comercialização de bens ou realização de eventos =   models.FloatField(null=False, default=0)
+  com_bens_FEFC =   models.FloatField(null=False, default=0)
+  com_bens_FP =   models.FloatField(null=False, default=0)
+  com_bens_OR =   models.FloatField(null=False, default=0)
+  #- Rendimentos de aplicações financeiras
+  FEFC  = models.FloatField(null=False, default=0)
+  fundo_partidario= models.FloatField(null=False, default=0)
+  outros = models.FloatField(null=False, default=0)
+  #- Recursos de origens não identificadas
+  rec_ori_nao_identificada = models.FloatField(null=False, default=0)
+
+
+  def __str__(self):
+    return f"{self.id}"
+    
 #------------------------------------------------
 class Receita_estimavel(models.Model):
 
-  candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, unique=True)
-Recursos próprios
-Recursos de pessoas físicas
-Recursos de outros candidatos
-- Fundo Especial de Financiamento de Campanha(FEFC)
-- Fundo Partidário
-- Outros Recursos
-Recursos de partido político
-- Fundo Especial de Financiamento de Campanha(FEFC)
-- Outros Recursos
-Doações pela Internet
-Outras receitas
-- Comercialização de bens ou realização de eventos
-Comercialização de Bens com FEFC
-Comercialização de Bem com FP
-Comercialização de Bem com OR
-- Rendimentos de aplicações financeiras
-Fundo Especial de Financiamento de Campanha(FEFC)
-- Recursos de origens não identificadas
-Recursos de Financiamento Coletivo
-Devolução de Receita
- Devolução de Recursos de Origens não Identificadas
+  #autofinanciamento
+  rec_proprios =   models.FloatField(null=False, default=0)
+  #doações
+  rec_pessoas_fisicas =   models.FloatField(null=False, default=0)
+
+  rec_outros_candidatos = models.ForeignKey(Rec_outros_candidatos, on_delete = models.CASCADE, unique=False)
+  rec_partido_politico = models.ForeignKey(Rec_partido_politico, on_delete = models.CASCADE, unique=False)
+  rec_outras_receitas = models.ForeignKey(Rec_outras_receitas, on_delete = models.CASCADE, unique=False)
+  
+  aquisicao_doacao_bens_moveis_imoveis   =   models.FloatField(null=False, default=0)
+  rec_financiamento_coletivo  =   models.FloatField(null=False, default=0)
+  devolucao_receitas =   models.FloatField(null=False, default=0)
+  devolucao_rec_orig_nao_identificadoas  =   models.FloatField(null=False, default=0)
+
   total =   models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.candidato}"
-
+    return f"{self.id}"
 
 #------------------------------------------------
-class Receita(models.Model):
+class Receita_financeiro(models.Model):
 
-  rec_estimavel = models.ForeignKey(Receita_estimavel, on_delete = models.CASCADE, unique=True)
+  #autofinanciamento
+  rec_proprios =   models.FloatField(null=False, default=0)
+  #doações
+  rec_pessoas_fisicas =   models.FloatField(null=False, default=0)
 
+  rec_outros_candidatos = models.ForeignKey(Rec_outros_candidatos, on_delete = models.CASCADE, unique=False)
+  rec_partido_politico = models.ForeignKey(Rec_partido_politico, on_delete = models.CASCADE, unique=False)
+  rec_outras_receitas = models.ForeignKey(Rec_outras_receitas, on_delete = models.CASCADE, unique=False)
+  
+  aquisicao_doacao_bens_moveis_imoveis   =   models.FloatField(null=False, default=0)
+  rec_financiamento_coletivo  =   models.FloatField(null=False, default=0)
+  devolucao_receitas =   models.FloatField(null=False, default=0)
+  devolucao_rec_orig_nao_identificadoas  =   models.FloatField(null=False, default=0)
 
+  total =   models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.candidato}"
+    return f"{self.id}"
   
+#------------------------------------------------
+class Receita(models.Model):
   
+  rec_estimavel = models.ForeignKey(Receita_estimavel, on_delete = models.CASCADE, unique=True)
+  rec_financeira = models.ForeignKey(Receita_financeiro, on_delete = models.CASCADE, unique=True)
+  total =   models.FloatField(null=False, default=0)
+  def __str__(self):
+    return f"{self.id}"
+
+#------------------------------------------------
+class grupo_despesa(models.Model):
+  
+  codigo =  models.CharField(max_length=20, null=False, unique=True) 
+  descricao = models.CharField(max_length=255, null=False, default="")
+  limite = models.FloatField(null=False, default=0)
+
+  def __str__(self):
+    return f"{self.codigo}"
+
+#------------------------------------------------
+class item_despesa(models.Model):
+  
+  grupo = models.ForeignKey(grupo_despesa, on_delete = models.CASCADE)
+  codigo =  models.CharField(max_length=20, null=False, unique=True) 
+  descricao = models.CharField(max_length=255, null=False, default="")
+
+  def __str__(self):
+    return f"{self.codigo} {self.descricao}"
+  
+#------------------------------------------------
+class Despesa(models.Model):
+
+  item  = models.ForeignKey(item_despesa, on_delete = models.CASCADE)
+  valor = models.FloatField(null=False, default=0)
+
+  def __str__(self):
+    return f"{self.id}"
+  
+#------------------------------------------------
+class Candidato(models.Model):
+
+  pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
+  partido = models.ForeignKey(Partido, on_delete = models.CASCADE, unique=False)
+  cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE, unique=False)
+  receita = models.ForeignKey(Receita, on_delete = models.CASCADE, unique=True)
+  despesa = models.ForeignKey(Despesa, on_delete = models.CASCADE, unique=True)
+
+  def __str__(self):
+    return f"{self.cargo.codigo} {self.pessoa.nome}"   
