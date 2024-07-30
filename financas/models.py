@@ -12,6 +12,22 @@ ITEM_CARGO_VEREADOR       = 1
 ITEM_CARGO_PREFEITO       = 2 
 ITEM_CARGO_VICE_PREFEITO  = 3 
 
+ITEM_DOACAO_FINANCEIRA = 0
+ITEM_DOACAO_ESTIMAVEL  = 1
+
+# limites doacao
+LIMITE_PERCENTUAL_DOACAO_SOBRE_RENDIMENTO_IRPF2024    = 10 #%
+LIMITE_RENDIMENTO_ISENTO                              =  30639.90 
+LIMITE_DOACAO_ESTIMAVEL                               =  40000.00
+
+#------------------------------------------------
+class limites(models.Model):
+  
+
+
+  def __str__(self):
+    return f"{self}"
+
 #------------------------------------------------
 class Cidade(models.Model):
 
@@ -34,9 +50,11 @@ class Pessoa(models.Model):
   fone= models.CharField(max_length=255,null=True) 
   email= models.CharField(max_length=255,null=True) 
   status = models.IntegerField(null=True)
+  rendimento_bruto_irpf2024 = models.FloatField(null=True, default=0)
+  
 
   def __str__(self):
-    return f"{self.name}"
+    return f"{self.nome}"
 
 #------------------------------------------------
 class Cargo(models.Model):
@@ -124,7 +142,28 @@ class Rec_outras_receitas(models.Model):
 
   def __str__(self):
     return f"{self.id}"
-    
+
+
+#------------------------------------------------
+class doacoes(models.Model):
+
+  class doacao_t(models.IntegerChoices):
+      FINANCEIRA = ITEM_DOACAO_FINANCEIRA,  "FINANCEIRA"
+      ESTIMAVEL = ITEM_DOACAO_ESTIMAVEL,    "ESTIMAVEL/CESSAO"
+
+  pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
+
+  tipo_doacao =  models.PositiveSmallIntegerField(
+                    choices=doacao_t.choices, 
+                    default=doacao_t.FINANCEIRA
+  )
+
+  valor =   models.FloatField(null=False, default=0)  
+
+
+  def __str__(self):
+    return f"{self.valor}"
+        
 #------------------------------------------------
 class Receita_estimavel(models.Model):
 
@@ -145,7 +184,7 @@ class Receita_estimavel(models.Model):
   total =   models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.id}"
+    return f"{self.total}"
 
 #------------------------------------------------
 class Receita_financeiro(models.Model):
@@ -167,7 +206,7 @@ class Receita_financeiro(models.Model):
   total =   models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.id}"
+    return f"{self.total}"
   
 #------------------------------------------------
 class Receita(models.Model):
@@ -176,7 +215,7 @@ class Receita(models.Model):
   rec_financeira = models.ForeignKey(Receita_financeiro, on_delete = models.CASCADE, unique=True)
   total =   models.FloatField(null=False, default=0)
   def __str__(self):
-    return f"{self.id}"
+    return f"{self.total}"
 
 #------------------------------------------------
 class grupo_despesa(models.Model):
@@ -205,7 +244,7 @@ class Despesa(models.Model):
   valor = models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.id}"
+    return f"{self.item.grupo.codigo} {self.item.descricao}"
   
 #------------------------------------------------
 class Candidato(models.Model):
