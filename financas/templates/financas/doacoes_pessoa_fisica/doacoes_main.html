@@ -1,0 +1,69 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Doações
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <b>  Eleições: {{ano_fiscal}}</b>
+  <h1> Doações</h1>
+  <h5>  Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6>  Cargo: {{candidato.cargo.nome}}</h6>
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:doador_incluir' %}"> Cadastrar doador de campanha </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+
+              <h5 class='my_h5'> Doadores</h5>
+              
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>     
+                  <th rowspan="1">CPF</th>
+                  <th rowspan="1">Nome </th> 
+                  <th rowspan="1">Rendimentos IRPF2024 </th>     
+                  <th rowspan="1">Limite para doação financeira </th>                           
+                  <th rowspan="1">Total financeiro doado </th> 
+                  <th rowspan="1">Limite para doação estimavel </th> 
+                  <th rowspan="1">Total de estimável doado </th> 
+                  <th rowspan="1">Total recursos doados </th>          
+                </tr>
+        
+                {% for doador in lst_doadores %}
+                  <tr>
+                    <td><a href= "{% url 'financas:doador_excluir' doador_id=doador.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:doador_editar' doador_id=doador.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ doador.pessoa.cpf}}</td>
+                    <td><a href= "{% url 'financas:lst_doacoes_doador' doador.id %}"> {{ doador.pessoa.nome}}</td>
+                    <td>{{ doador.pessoa.rendimento_bruto_irpf2024}}</td>  
+                    <td>{{ doador.val_limite_doacao_financeira}}</td>  
+                    <td>{{ doador.total_doacao_financeira}}</td>
+                    <td>{{ doador.val_limite_doacao_estimavel}}</td>
+                    <td>{{ doador.total_doacao_estimavel}}</td>
+                    <td>{{ doador.total_doacao_totalizado}}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}

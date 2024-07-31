@@ -691,3 +691,159 @@ def item_despesa_excluir(request, item_despesa_id):
   request.session['msg_status'] = 'exclusão com sucesso!!!'
 
   return redirect('financas:cadastro_item_despesa') 
+
+
+#----------------------------------------------------------
+# CADASTRO DOADOR
+#---------------------------------------------------------
+def doador_incluir(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  if request.POST: 
+      form = Doador_Form(request.POST)    
+
+      if form.is_valid():
+        doador = form.save(commit=False)
+        doador.val_limite_doacao_estimavel = LIMITE_DOACAO_ESTIMAVEL
+        doador.val_limite_doacao_financeira = doador.pessoa.rendimento_bruto_irpf2024 * (LIMITE_PERCENTUAL_DOACAO_SOBRE_RENDIMENTO_IRPF2024 / 100)
+        doador.save()
+
+        request.session['msg_status'] = 'doador incluído com sucesso!'
+        return redirect('financas:doacoes_main')
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:doacoes_main')
+
+  else:
+    
+    template = loader.get_template('financas/cadastro/doador/doador_editar_incluir.html')
+    form = Doador_Form( )  
+
+    context = {
+                'form'       : form,
+                'user'       : request.user,
+                'msg'        : msg
+              }
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def doador_editar(request, doador_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  doador = Doador.objects.get(id=doador_id)
+  if request.method == 'POST':
+
+    form = Doador_Form(request.POST, instance = doador)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:doacoes_main')     
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:doacoes_main')    
+    
+  else:
+
+    form = Doador_Form(instance = doador)
+    template = loader.get_template('financas/cadastro/doador/doador_editar_incluir.html')
+    context = {
+                'doador'     : doador,
+                'ano_fiscal'  : ano_fiscal,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def doador_excluir(request, doador_id):
+  
+  msg =  request.session['msg_status']
+
+  doador = Doador.objects.get(id = doador_id)
+  doador.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:doacoes_main') 
+
+#----------------------------------------------------------
+# CADASTRO DOARDOR
+#---------------------------------------------------------
+def tgastos_incluir(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  if request.POST: 
+      form = Teto_gastos_Form(request.POST)    
+
+      if form.is_valid():
+        form.save()
+
+        request.session['msg_status'] = 'Teto de gastos incluído com sucesso!'
+        return redirect('financas:teto_gatos_main')
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:teto_gatos_main')
+
+  else:
+    
+    template = loader.get_template('financas/cadastro/tgastos/tgastos_editar_incluir.html')
+    form = Teto_gastos_Form( )  
+
+    context = {
+                'form'       : form,
+                'user'       : request.user,
+                'msg'        : msg
+              }
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def tgastos_editar(request, tgastos_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  tgastos = Teto_gasto_cargo.objects.get(id=tgastos_id)
+  if request.method == 'POST':
+
+    form = Teto_gastos_Form(request.POST, instance = tgastos)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:teto_gatos_main')     
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:teto_gatos_main')    
+    
+  else:
+
+    form = Teto_gastos_Form(instance = tgastos)
+    template = loader.get_template('financas/cadastro/tgastos/tgastos_editar_incluir.html')
+    context = {
+                'tgastos'     : tgastos,
+                'ano_fiscal'  : ano_fiscal,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def tgastos_excluir(request, tgastos_id):
+  
+  msg =  request.session['msg_status']
+
+  tgastos = Teto_gasto_cargo.objects.get(id = tgastos_id)
+  tgastos.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:teto_gatos_main') 

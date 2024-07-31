@@ -54,6 +54,7 @@
               <h5 class='my_h5'> Candidatos cadastrados</h5>
               <table>
                 <tr>
+
                   <th rowspan="1">id</th>     
                   <th rowspan="1">Codigo</th>
                   <th rowspan="1">Nome </th> 
@@ -66,7 +67,7 @@
         
                 {% for candidato in lst_candidatos %}
                   <tr>
-                    <td><a href= "{% url 'financas:candidato_excluir' candidato_id=candidato.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:candidato_editar' candidato_id=candidato.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ candidato.codigo}}</td>
                     <td><a href= "{% url 'financas:candidato_receitas' candidato_id=candidato.id %}">{{ candidato.pessoa.nome}}</td>
                     <td>{{ candidato.partido.sigla}}</td>
@@ -76,10 +77,6 @@
                   </tr>
                 {% endfor %}
               </table>
-
-
-
-
 
             </td>
           </tr>

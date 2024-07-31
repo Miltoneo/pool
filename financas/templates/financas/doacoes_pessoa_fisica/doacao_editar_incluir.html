@@ -1,13 +1,16 @@
-{% extends "financas/template_page_main.html" %}
+{% extends "financas/template_page_navegacao.html" %}
 
 {% block title %}
-  Edição de cargos
+  Doacao de pessoa física
 {% endblock %}
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Cargo: editar</h1>
+  <h1> Doacao de pessoa física: incluir/editar</h1>
+  <b>  Doador: {{doador.pessoa.nome}}</b>
+  <p>
+  <b>  CPF: {{doador.pessoa.cpf}}</b>
 
 {% endblock %}
 

@@ -52,8 +52,34 @@ urlpatterns = [
     path('item_despesa_editar/<int:item_despesa_id>/', views_cadastro.item_despesa_editar, name='item_despesa_editar'),
     path('item_despesa_excluir/<int:item_despesa_id>/', views_cadastro.item_despesa_excluir, name='item_despesa_excluir'),
 
-  # cadastro receitas
+  # cadastro doador
+    path('doador_incluir/', views_cadastro.doador_incluir, name='doador_incluir'),
+    path('doador_editar/<int:doador_id>/', views_cadastro.doador_editar, name='doador_editar'),
+    path('doador_excluir/<int:doador_id>/', views_cadastro.doador_excluir, name='doador_excluir'),
+
+  # cadastro TETO DE GASTOS
+    path('tgastos_incluir/', views_cadastro.tgastos_incluir, name='tgastos_incluir'),
+    path('tgastos_editar/<int:tgastos_id>/', views_cadastro.tgastos_editar, name='tgastos_editar'),
+    path('tgastos_excluir/<int:tgastos_id>/', views_cadastro.tgastos_excluir, name='tgastos_excluir'),
+
+  #---------------------------------------------------------------------------------------
+  # VIEWS
+  #---------------------------------------------------------------------------------------
+  # Menu receitas
     path('candidato_receitas/<int:candidato_id>/', views.candidato_receitas, name='candidato_receitas'),
+
+  # Menu doacoes
+    path('doacoes_main/', views.doacoes_main, name='doacoes_main'),
+    path('lst_doacoes_doador/<int:doador_id>', views.lst_doacoes_doador, name='lst_doacoes_doador'),    
+    path('doacao_incluir/<int:doador_id>/', views.doacao_incluir, name='doacao_incluir'),
+
+  # Menu autofinacimento
+    path('autofinancia_main/', views.autofinancia_main, name='autofinancia_main'),
+    path('lst_doacoes_doador/<int:doador_id>', views.lst_doacoes_doador, name='lst_doacoes_doador'),    
+    path('doacao_incluir/<int:doador_id>/', views.doacao_incluir, name='doacao_incluir'),
+
+  # Menu teto gastos
+    path('teto_gatos_main/', views.teto_gatos_main, name='teto_gatos_main'),
 
 ]
  

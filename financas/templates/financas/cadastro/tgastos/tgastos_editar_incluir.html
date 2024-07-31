@@ -1,13 +1,14 @@
-{% extends "financas/template_page_main.html" %}
+{% extends "financas/template_page_navegacao.html" %}
 
 {% block title %}
-  Edição de cargos
+  Item de despesa
 {% endblock %}
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
-  <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Cargo: editar</h1>
+  <h3> {{empresa}} </h3>
+  <h1> Item de despesa: incluir/editar</h1>
+  <h4> Eleições: {{ano_fiscal}}</h4>
 
 {% endblock %}
 

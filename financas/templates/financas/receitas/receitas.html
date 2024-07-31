@@ -6,12 +6,10 @@
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
-  <b> Eleições: {{ano_fiscal}}</b>
-  <h3> {{request.session.sistema}} </h3>
+  <b>  Eleições: {{ano_fiscal}}</b>
   <h1> Receitas</h1>
-  <b> Candidato: {{candidato.pessoa.nome}}</b>
-  <p>
-  <b> Cargo: {{candidato.cargo.nome}}</b>
+  <h5>  Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6>  Cargo: {{candidato.cargo.nome}}</h6>
 {% endblock %}
 
 

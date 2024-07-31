@@ -1,0 +1,68 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Autofinanciamento
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <b>  Eleições: {{ano_fiscal}}</b>
+  <h1> Autofinanciamento</h1>
+  <h5>  Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6>  Cargo: {{candidato.cargo.nome}}</h6>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:doador_incluir' %}"> Incluir financimento </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>     
+                  <th rowspan="1">Valor</th>     
+                </tr>
+
+                <tr>
+                  <td rowspan="1">Teto gasto para o cargo </td>
+                  <td>{{ teto_gasto }}</td>
+                </tr>
+
+                <tr>
+                </tr>
+
+                <tr>
+                </tr>
+
+                <tr>
+                </tr>
+
+                <tr>
+                </tr>
+
+                <tr>
+                </tr>
+
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}

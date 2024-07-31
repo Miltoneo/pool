@@ -57,3 +57,29 @@ class Item_despesa_Form(ModelForm):
         model = Item_despesa
         fields =  "__all__"    
         exclude = ('receita', 'despesa')    
+
+#-----------------------------------------
+class Doador_Form(ModelForm):
+    class Meta:
+        model = Doador
+        fields = ['pessoa',]   
+
+#-----------------------------------------
+class Doacao_Form(ModelForm):
+    class Meta:
+        model = Doacoes
+        fields =  "__all__"   
+        exclude = ('doador',) 
+        widgets = {
+                    'data': widgets.DateInput(attrs={'type': 'date'}),
+                    }
+        
+#-----------------------------------------
+class Teto_gastos_Form(ModelForm):
+    class Meta:
+        model = Teto_gasto_cargo
+        fields =  "__all__"   
+
+
+
+

@@ -12,14 +12,15 @@ ITEM_CARGO_VEREADOR       = 1
 ITEM_CARGO_PREFEITO       = 2 
 ITEM_CARGO_VICE_PREFEITO  = 3 
 
-ITEM_DOACAO_FINANCEIRA = 0
-ITEM_DOACAO_ESTIMAVEL  = 1
-
 # limites doacao
 LIMITE_PERCENTUAL_DOACAO_SOBRE_RENDIMENTO_IRPF2024    = 10        #%
 LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO                  = 10        #%
-LIMITE_RENDIMENTO_ISENTO                              =  30639.90 
+LIMITE_RENDIMENTO_ISENTO                              =  30639.00
 LIMITE_DOACAO_ESTIMAVEL                               =  40000.00
+
+# Tipo de doacao
+TIPO_DOACAO_FINANCEIRA = 0
+TIPO_DOACAO_ESTIMAVEL = 1
 
 #------------------------------------------------
 class limites(models.Model):
@@ -72,7 +73,7 @@ class Cargo(models.Model):
     return f"{self.nome}"
   
 #------------------------------------------------
-class Limite_gasto_cargo(models.Model):
+class Teto_gasto_cargo(models.Model):
   
   cidade  =  models.ForeignKey(Cidade, on_delete = models.CASCADE, unique=False)
   cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE, unique=False)
@@ -143,26 +144,7 @@ class Rec_outras_receitas(models.Model):
   def __str__(self):
     return f"{self.id}"
 
-#------------------------------------------------
-class doacoes(models.Model):
-
-  class doacao_t(models.IntegerChoices):
-      FINANCEIRA = ITEM_DOACAO_FINANCEIRA,  "FINANCEIRA"
-      ESTIMAVEL = ITEM_DOACAO_ESTIMAVEL,    "ESTIMAVEL/CESSAO"
-
-  pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
-
-  tipo_doacao =  models.PositiveSmallIntegerField(
-                    choices=doacao_t.choices, 
-                    default=doacao_t.FINANCEIRA
-  )
-
-  valor =   models.FloatField(null=False, default=0)  
-
-
-  def __str__(self):
-    return f"{self.valor}"
-        
+       
 #------------------------------------------------
 class Receita_estimavel(models.Model):
 
@@ -257,3 +239,35 @@ class Candidato(models.Model):
 
   def __str__(self):
     return f"{self.codigo} {self.pessoa.nome}" 
+
+  
+#------------------------------------------------
+class Doador(models.Model):
+
+  pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
+  val_limite_doacao_financeira = models.FloatField(null=False, default=0) 
+  val_limite_doacao_estimavel = models.FloatField(null=False, default=0) 
+  total_doacao_financeira = models.FloatField(null=False, default=0) 
+  total_doacao_estimavel = models.FloatField(null=False, default=0) 
+  total_doacao_totalizado=  models.FloatField(null=False, default=0) 
+
+  def __str__(self):
+    return f"{self.pessoa.cpf} {self.pessoa.nome}" 
+  
+#------------------------------------------------
+class Doacoes(models.Model):
+
+  class tipo_t(models.IntegerChoices):
+      FINANCEIRO = TIPO_DOACAO_FINANCEIRA, "FINANCEIRO"
+      ESTIMAVEL  = TIPO_DOACAO_ESTIMAVEL, "ESTIMAVEL"
+
+  doador = models.ForeignKey(Doador, on_delete = models.CASCADE, null=True)
+  data = models.DateField(null=True)
+  valor = models.FloatField(null=False, default=0) 
+  tipo_doacao=  models.PositiveSmallIntegerField(
+                    choices=tipo_t.choices, 
+                    default=tipo_t.FINANCEIRO
+                      )
+
+  def __str__(self):
+    return f"{self.tipo_doacao}" 

@@ -1,0 +1,60 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  tgastos de gastos
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <b>  Eleições: {{ano_fiscal}}</b>
+  <h1> Teto de gastos por cidade e cargo</h1>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:tgastos_incluir' %}"> Cadastrar Teto de gastos </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>     
+                  <th rowspan="1">Cidade</th>
+                  <th rowspan="1">Estado</th>
+                  <th rowspan="1">Cargo </th> 
+                  <th rowspan="1">valor </th>         
+
+
+                </tr>
+        
+                {% for tgastos in lst_tgastos %}
+                  <tr>
+                    <td><a href= "{% url 'financas:tgastos_excluir' tgastos_id=tgastos.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:tgastos_editar' tgastos_id=tgastos.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ tgastos.cidade.nome}}</td>
+                    <td>{{ tgastos.cidade.estado}}</td>
+                    <td>{{ tgastos.cargo.nome}}</td>
+                    <td>{{ tgastos.valor}}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}
