@@ -1,0 +1,62 @@
+{% extends "financas/template_page_main.html" %}
+
+{% block title %}
+  Cadastro de candidato
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h3>{{empresa}} </h3>
+  <h1> Cadastro candidato</h1>
+  <h4> Eleições: {{ano_fiscal}}</h4>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:candidato_incluir' %}"> Cadastrar candidato </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <a> candidatos cadastradas</a>
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>     
+                  <th rowspan="1">Codigo</th>
+                  <th rowspan="1">Partido </th> 
+                  <th rowspan="1">Cargo </th> 
+                  <th rowspan="1">Nome </th> 
+
+                </tr>
+        
+                {% for candidato in lst_candidatos %}
+                  <tr>
+                    <td><a href= "{% url 'financas:candidato_excluir' candidato_id=candidato.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:candidato_editar' candidato_id=candidato.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ candidato.codigo}}</td>
+                    <td>{{ candidato.partido.sigla}}</td>
+                    <td>{{ candidato.cargo.nome}}</td>                    
+                    <td>{{ candidato.pessoa.nome}}</td>
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}
