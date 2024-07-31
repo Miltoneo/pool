@@ -25,7 +25,8 @@ def index(request):
   mes = now.strftime("%m")
   msg =  ''
 
-
+  request.session['sistema'] = 'Sistema de apoio ao candidato'
+  
   if 'msg' in request.session:
     msg = request.session['msg_status']
   else:
@@ -57,10 +58,33 @@ def index(request):
 
     template = loader.get_template('financas/index.html')
     context = {
+                'ano_fiscal'    : ano_fiscal,
                 'lst_candidatos'   : ds_candidatos,
                 'user'          : request.user,
-                'ano_fiscal'    : ano_fiscal,
+
                 'msg'           : msg + 'mes:' + str(mes)
               }
 
     return HttpResponse(template.render(context, request))
+
+#----------------------------------------------------------
+# receitas
+#---------------------------------------------------------
+def candidato_receitas(request, candidato_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  request.session['candidato_id'] =   candidato_id
+  candidato = Candidato.objects.all
+
+  template = loader.get_template('financas/receitas/receitas.html')
+  context = {
+              'ano_fiscal'        : ano_fiscal,
+
+              'candidato'         : candidato,
+              'msg'               : msg,
+              'user'              : request.user,
+            }
+  
+  return HttpResponse(template.render(context, request))

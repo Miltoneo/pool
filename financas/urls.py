@@ -52,5 +52,8 @@ urlpatterns = [
     path('item_despesa_editar/<int:item_despesa_id>/', views_cadastro.item_despesa_editar, name='item_despesa_editar'),
     path('item_despesa_excluir/<int:item_despesa_id>/', views_cadastro.item_despesa_excluir, name='item_despesa_excluir'),
 
+  # cadastro receitas
+    path('candidato_receitas/<int:candidato_id>/', views.candidato_receitas, name='candidato_receitas'),
+
 ]
  

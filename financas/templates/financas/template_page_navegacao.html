@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="bBW6t7so6dAw0kHfRhkAxcaQzosrQinyXFYoojcOWeg" />
     
-    {% load bootstrap5 %}
+ {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     {% load i18n %}
     {% load adsense_tags %}
-  
+    {% load static %}
+
 <!-- SECTION: SCRIPTS -->
     {% block bl_script %} 
     {% endblock %}
@@ -21,6 +22,20 @@
   </script>
 
   <style>
+      .mybackuground {
+        background-image: url('{% static "financas/abelha.jpg" %}') ;
+        background-color:   transparent;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size:  cover;
+
+        opacity: 1;
+        /*color: white;*/
+        height: 100%;
+	      width: 100%; 
+        /*padding: 100px 0 0 0;  */ 
+        }
+
       /* Style the list inside the menu */
       article {
         float: left;
@@ -49,7 +64,6 @@
         padding: 8px;
         text-align: center;
         /*miltinho*/
-
       }
 
       th {
@@ -181,10 +195,11 @@
         <tr>
           <td>
             <div class="list-group">
-              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Receitas</a>
+              <a href="{% url 'financas:index' %}" class="btn btn-sm btn-primary px-6"> Home</a>
+              <a href= {% url 'financas:candidato_receitas' candidato_id=request.session.candidato_id %} class="btn btn-sm btn-primary px-6"> Receitas</a>
               <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Despesas</a>
-              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Balanço</a>
-              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Gestão de cadastro</a>
+              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Balanço    </a>
+
             </div>
           </td>
         </tr>
