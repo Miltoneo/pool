@@ -76,7 +76,7 @@ urlpatterns = [
   # Menu autofinacimento
     path('autofinancia_main/', views.autofinancia_main, name='autofinancia_main'),
     path('lst_doacoes_doador/<int:doador_id>', views.lst_doacoes_doador, name='lst_doacoes_doador'),    
-    path('doacao_incluir/<int:doador_id>/', views.doacao_incluir, name='doacao_incluir'),
+    path('autofinanciameto_incluir/<int:candidato_id>/', views.autofinanciameto_incluir, name='autofinanciameto_incluir'),
 
   # Menu teto gastos
     path('teto_gatos_main/', views.teto_gatos_main, name='teto_gatos_main'),

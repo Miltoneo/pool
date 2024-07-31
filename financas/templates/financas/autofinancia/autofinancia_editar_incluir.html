@@ -1,16 +1,15 @@
 {% extends "financas/template_page_navegacao.html" %}
 
 {% block title %}
-  Doacao de pessoa física
+  Autofinancimento inclusão/edição
 {% endblock %}
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Doacao de pessoa física: incluir/editar</h1>
-  <b>  Doador: {{doador.pessoa.nome}}</b>
-  <p>
-  <b>  CPF: {{doador.pessoa.cpf}}</b>
+  <h1> Autofinanciamento: incluir/editar</h1>
+  <h5>  Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6>  Cargo: {{candidato.cargo.nome}}</h6>
 
 {% endblock %}
 

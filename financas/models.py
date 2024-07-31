@@ -271,6 +271,7 @@ class Doacoes(models.Model):
       ESTIMAVEL_VEICULOS  = TIPO_DOACAO_ESTIMAVEL_VEICULOS,  "CESSÃO DE VEICULOS "
       ESTIMAVEL_BENS      = TIPO_DOACAO_ESTIMAVEL_BENS,  "CESSÃO DE BENS "
 
+  candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, null=True)
   doador = models.ForeignKey(Doador, on_delete = models.CASCADE, null=True)
   data = models.DateField(null=True)
   valor = models.FloatField(null=False, default=0) 

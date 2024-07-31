@@ -69,11 +69,12 @@ class Doacao_Form(ModelForm):
     class Meta:
         model = Doacoes
         fields =  "__all__"   
-        exclude = ('doador',) 
+        exclude = ('doador','candidato',) 
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
                     }
-        
+
+
 #-----------------------------------------
 class Teto_gastos_Form(ModelForm):
     class Meta:

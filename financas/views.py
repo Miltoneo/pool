@@ -202,13 +202,64 @@ def autofinancia_main(request):
               'candidato'         : candidato,
               'teto_gasto'        : teto_gasto,
               'lst_doadores'      : lst_doadores,
-              'msg'               : teto_gasto,
+              'msg'               : msg,
               'user'              : request.user,
             }
   
   return HttpResponse(template.render(context, request))
 
+#------------------------------------------------------
+#------------------------------------------------------
+def autofinanciameto_incluir(request, candidato_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
 
+  candidato = Candidato.objects.get(id=candidato_id)
+  if request.POST: 
+      form = Doacao_Form(request.POST)    
+
+      if form.is_valid():
+        doacao = form.save(commit=False)
+        doacao.candidato = candidato
+
+        # totaliza doações
+        if (doacao.tipo_doacao == TIPO_DOACAO_FINANCEIRA):
+            candidato.total_autofin_financeiro += doacao.valor
+
+        elif (doacao.tipo_doacao == TIPO_DOACAO_ESTIMAVEL_BENS):
+            candidato.total_autofin_estimavel_bens += doacao.valor 
+
+        elif (doacao.tipo_doacao == TIPO_DOACAO_ESTIMAVEL_VEICULOS):
+            candidato.total_autofin_estimavel_veiculos += doacao.valor 
+
+        candidato.total_autofin_totalizado = candidato.total_autofin_financeiro +\
+                                              candidato.total_autofin_estimavel_bens + \
+                                              candidato.total_autofin_estimavel_veiculos
+
+        # save
+        candidato.save()
+        doacao.save()
+
+        request.session['msg_status'] = 'doador incluído com sucesso!'
+        return redirect('financas:autofinancia_main')
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:autofinancia_main')
+
+  else:
+    
+    template = loader.get_template('financas/autofinancia/autofinancia_editar_incluir.html')
+    form = Doacao_Form( )  
+
+    context = {
+                'ano_fiscal' : ano_fiscal,
+                'candidato'     : candidato,
+                'form'       : form,
+                'msg'        : msg,
+                'user'       : request.user,
+              }
+    return HttpResponse(template.render(context, request))
 
 #----------------------------------------------------------
 # TETO DE GASTOS
