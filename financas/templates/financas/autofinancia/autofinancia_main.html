@@ -36,9 +36,41 @@
                 </tr>
 
                 <tr>
-                  <td rowspan="1">Teto gasto para o cargo </td>
+                  <td rowspan="1">Valor teto de gasto para o cargo </td>
                   <td>{{ teto_gasto }}</td>
                 </tr>
+
+                <tr>
+                  <td rowspan="1"> limite (%) sobre valor teto </td>
+                  <td>{{ candidato.val_percent_permitido_autofinanciamento }}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Valor maximo permitido de autofinancimento (Financeiro + estimável) </td>
+                  <td>{{ candidato.val_permitido_autofinanciamento }}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Valor atual do autofinanciamento financeiro: doaçao </td>
+                  <td>{{ candidato.total_autofin_financeiro }}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Valor atual do autofinanciamento estimável: cessão de bens moveis/imóveis  </td>
+                  <td>{{ candidato.total_autofin_estimavel_bens }}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1">  Valor atual do autofinanciamento estimável: cessão de veiculos (estimável) </td>
+                  <td>{{ candidato.total_autofin_estimavel_veiculos }}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Valor atual total autofinanciamento </td>
+                  <td>{{ candidato.total_autofin_totalizado }}</td>
+                </tr>
+
+
 
                 <tr>
                 </tr>

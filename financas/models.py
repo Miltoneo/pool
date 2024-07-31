@@ -20,7 +20,8 @@ LIMITE_DOACAO_ESTIMAVEL                               =  40000.00
 
 # Tipo de doacao
 TIPO_DOACAO_FINANCEIRA = 0
-TIPO_DOACAO_ESTIMAVEL = 1
+TIPO_DOACAO_ESTIMAVEL_VEICULOS = 1
+TIPO_DOACAO_ESTIMAVEL_BENS = 3
 
 #------------------------------------------------
 class limites(models.Model):
@@ -237,6 +238,14 @@ class Candidato(models.Model):
   receita = models.ForeignKey(Receita, on_delete = models.CASCADE, null=True)
   despesa = models.ForeignKey(Despesa, on_delete = models.CASCADE, null=True)
 
+  #
+  val_percent_permitido_autofinanciamento = models.FloatField(null=False, default=0) # sobre o teto de gasto para o cargo
+  val_permitido_autofinanciamento       = models.FloatField(null=False, default=0)   # val_percent * teto de gasto
+  total_autofin_financeiro = models.FloatField(null=False, default=0) 
+  total_autofin_estimavel_bens = models.FloatField(null=False, default=0) 
+  total_autofin_estimavel_veiculos = models.FloatField(null=False, default=0) 
+  total_autofin_totalizado=  models.FloatField(null=False, default=0) 
+
   def __str__(self):
     return f"{self.codigo} {self.pessoa.nome}" 
 
@@ -258,8 +267,9 @@ class Doador(models.Model):
 class Doacoes(models.Model):
 
   class tipo_t(models.IntegerChoices):
-      FINANCEIRO = TIPO_DOACAO_FINANCEIRA, "FINANCEIRO"
-      ESTIMAVEL  = TIPO_DOACAO_ESTIMAVEL, "ESTIMAVEL"
+      FINANCEIRO          = TIPO_DOACAO_FINANCEIRA, "FINANCEIRO"
+      ESTIMAVEL_VEICULOS  = TIPO_DOACAO_ESTIMAVEL_VEICULOS,  "CESSÃO DE VEICULOS "
+      ESTIMAVEL_BENS      = TIPO_DOACAO_ESTIMAVEL_BENS,  "CESSÃO DE BENS "
 
   doador = models.ForeignKey(Doador, on_delete = models.CASCADE, null=True)
   data = models.DateField(null=True)

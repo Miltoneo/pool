@@ -439,7 +439,14 @@ def candidato_incluir(request):
       form = Candidato_Form(request.POST)    
 
       if form.is_valid():
-        form.save()
+        
+        candidato = form.save(commit= False)
+
+        # calcula limites de gastos
+        val_teto_gastos = Teto_gasto_cargo.objects.get(cidade = candidato.pessoa.cidade, cargo=candidato.cargo).valor
+        candidato.val_permitido_autofinanciamento =  val_teto_gastos * (LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO /100)
+        candidato.val_percent_permitido_autofinanciamento = LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO
+        candidato.save()
    
         request.session['msg_status'] = 'candidato incluído com sucesso!'
         return redirect('financas:cadastro_candidato')

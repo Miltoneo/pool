@@ -90,7 +90,7 @@ def candidato_receitas(request, candidato_id):
 
 
 #----------------------------------------------------------
-# Doações
+# Doações PESSOA FÍSICA
 #---------------------------------------------------------
 def doacoes_main(request):
   
@@ -199,7 +199,7 @@ def autofinancia_main(request):
   template = loader.get_template('financas/autofinancia/autofinancia_main.html') 
   context = {
               'ano_fiscal'        : ano_fiscal,
-              'candidato'       : candidato,
+              'candidato'         : candidato,
               'teto_gasto'        : teto_gasto,
               'lst_doadores'      : lst_doadores,
               'msg'               : teto_gasto,
@@ -208,21 +208,23 @@ def autofinancia_main(request):
   
   return HttpResponse(template.render(context, request))
 
+
+
 #----------------------------------------------------------
-# AutoFinanciamento
+# TETO DE GASTOS
 #---------------------------------------------------------
 def teto_gatos_main(request):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
 
-  lst_tgastos = Teto_gasto_cargo.objects.all().order_by('cidade').order_by('cargo')
+  lst_tgastos = Teto_gasto_cargo.objects.all().order_by('cidade')
 
   template = loader.get_template('financas/teto_gastos/tgastos_main.html') 
   context = {
               'ano_fiscal'        : ano_fiscal,
               'lst_tgastos'       : lst_tgastos,
-              'msg'               : msg,
+              'msg'               : '123',
               'user'              : request.user,
             }
   
