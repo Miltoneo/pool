@@ -7,16 +7,25 @@
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Autofinanciamento</h1>
-  <h5>  Candidato: {{candidato.pessoa.nome}}</h5>
-  <h6>  Cargo: {{candidato.cargo.nome}}</h6>
+  <h1> Sumario do autofinanciamento</h1>
+  <h5> Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6> Cargo: {{candidato.cargo.nome}}</h6>
 
 {% endblock %}
 
 
 {% block content %}
   <div>
-      <!-- main -->
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="{% url 'financas:autofinancia_main'%}">Relatorio</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'financas:autofinancia_lancamentos' candidato_id=candidato.id %}">Lançamentos</a></li>
+
+  </ul>
+</nav>
+
+
     <div class="main">
 
       <!-- barra ações-->
@@ -30,8 +39,9 @@
             <td>
               
               <table>
+                <h5 class= 'my_h5'> Situação: {{situacao}}
                 <tr>
-                  <th rowspan="1">id</th>     
+                  <th rowspan="1">Item</th>     
                   <th rowspan="1">Valor</th>     
                 </tr>
 
@@ -42,7 +52,7 @@
 
                 <tr>
                   <td rowspan="1"> limite (%) sobre valor teto </td>
-                  <td>{{ candidato.val_percent_permitido_autofinanciamento }}</td>
+                  <td>{{ candidato.val_percent_permitido_autofinanciamento }} %</td>
                 </tr>
 
                 <tr>
@@ -66,25 +76,8 @@
                 </tr>
 
                 <tr>
-                  <td rowspan="1"> Valor atual total autofinanciamento </td>
-                  <td>{{ candidato.total_autofin_totalizado }}</td>
-                </tr>
-
-
-
-                <tr>
-                </tr>
-
-                <tr>
-                </tr>
-
-                <tr>
-                </tr>
-
-                <tr>
-                </tr>
-
-                <tr>
+                  <td rowspan="1"> <b> Valor atual total autofinanciamento </b></td>
+                  <td><b>{{ candidato.total_autofin_totalizado }} </b></td>
                 </tr>
 
               </table>

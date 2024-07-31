@@ -193,15 +193,14 @@ def autofinancia_main(request):
   candidato = Candidato.objects.get(id=candidadto_id)
   teto_gasto = Teto_gasto_cargo.objects.get(cidade=candidato.pessoa.cidade, cargo=candidato.cargo).valor
 
-
-  lst_doadores = Doador.objects.all
+  situacao = chk_autofinancimanto(candidato)
 
   template = loader.get_template('financas/autofinancia/autofinancia_main.html') 
   context = {
               'ano_fiscal'        : ano_fiscal,
               'candidato'         : candidato,
               'teto_gasto'        : teto_gasto,
-              'lst_doadores'      : lst_doadores,
+              'situacao'          : situacao,
               'msg'               : msg,
               'user'              : request.user,
             }
@@ -209,6 +208,26 @@ def autofinancia_main(request):
   return HttpResponse(template.render(context, request))
 
 #------------------------------------------------------
+def autofinancia_lancamentos(request, candidato_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  candidato = Candidato.objects.get(id=candidato_id)
+
+  lst_lancamentos = Doacoes.objects.filter(candidato = candidato).order_by('data').order_by('tipo_doacao')
+
+  template = loader.get_template('financas/autofinancia/autofinancia_lancamentos.html')
+
+  context = {
+                'ano_fiscal' : ano_fiscal,
+                'candidato'  : candidato,
+                'lst_lancamentos'       : lst_lancamentos,
+                'msg'        : msg,
+                'user'       : request.user,
+              }
+  return HttpResponse(template.render(context, request))
+
 #------------------------------------------------------
 def autofinanciameto_incluir(request, candidato_id):
   
@@ -242,7 +261,7 @@ def autofinanciameto_incluir(request, candidato_id):
         doacao.save()
 
         request.session['msg_status'] = 'doador incluído com sucesso!'
-        return redirect('financas:autofinancia_main')
+        return redirect('financas:autofinancia_lancamentos', candidato_id)
       else:
         request.session['msg_status'] = 'Falha inclusão !'
         return redirect('financas:autofinancia_main')
@@ -260,6 +279,59 @@ def autofinanciameto_incluir(request, candidato_id):
                 'user'       : request.user,
               }
     return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def autofinanciameto_editar(request, doacao_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']  
+
+  candidato = Candidato.objects.get(id=candidato_id)
+  doacao = Doacoes.objects.get(id=doacao_id)
+  if request.method == 'POST':
+
+    form = Doacao_Form(request.POST, instance = doacao)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:autofinancia_lancamentos', candidato_id)  
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:autofinancia_lancamentos', candidato_id)  
+    
+  else:
+
+    form = Doacao_Form(instance = doacao)
+    template = loader.get_template('financas/autofinancia/autofinancia_editar_incluir.html')
+    context = {
+                'ano_fiscal'  : ano_fiscal,
+                'candidato'     : candidato,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def autofinanciameto_excluir(request, doacao_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  candidato_id = request.session['candidato_id']  
+  candidato = Candidato.objects.get(id=candidato_id)
+
+  doacao = Doacoes.objects.get(id=doacao_id)
+  doacao.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:autofinancia_lancamentos', candidato_id)  
+
+
+
 
 #----------------------------------------------------------
 # TETO DE GASTOS

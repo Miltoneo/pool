@@ -1,0 +1,69 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Doações
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <b>  Eleições: {{ano_fiscal}}</b>
+  <h1> Lista de autofinanciamento</h1>
+  <b>  Candidato: {{candidato.candidato.nome}}</b>
+  <p>
+  <b>  Cargo: {{candidato.cargo.nome}}</b>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="{% url 'financas:autofinancia_main'%}">Relatorio</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'financas:autofinancia_lancamentos' candidato_id=candidato.id %}">Lançamentos</a></li>
+
+  </ul>
+</nav>
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+        <a href= "{% url 'financas:autofinanciameto_incluir' candidato.id %}"> Incluir autofinanciamento </a>
+      </div>
+        <table> 
+          <tr>
+            <td>
+            
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>  
+                  <th rowspan="1">Data</th>
+                  <th rowspan="1">Tipo doacao</th>
+                  <th rowspan="1">Valor </th> 
+      
+                </tr>
+        
+                {% for lancamento in lst_lancamentos %}
+                  <tr>
+                    <td><a href= "{% url 'financas:autofinanciameto_excluir' doacao_id=lancamento.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:autofinanciameto_editar' doacao_id=lancamento.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ lancamento.data}}</td>
+                    <td>{{ lancamento.tipo_doacao}}</td>  
+                    <td>{{ lancamento.valor}}</td>  
+
+                  </tr>
+                {% endfor %}
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}
