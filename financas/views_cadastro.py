@@ -496,17 +496,198 @@ def candidato_editar(request, candidato_id):
 def candidato_excluir(request, candidato_id):
   
   msg =  request.session['msg_status']
+
+  candidato = Candidato.objects.get(id = candidato_id)
+  candidato.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:cadastro_candidato') 
+
+
+#----------------------------------------------------------
+# CADASTRO GRUPO DESPESAS
+#---------------------------------------------------------
+def cadastro_gpo_despesas(request):
+  
+  msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
 
-  lst_candidato = Candidato.objects.all
+  lst_gpo_despesas = Grupo_despesa.objects.all
 
-  template = loader.get_template('financas/cadastro/cargo/cadastro_cargo.html')
+  template = loader.get_template('financas/cadastro/gpo_despesas/gpo_despesas.html')
   context = {
               'ano_fiscal'        : ano_fiscal,
-              'lst_candidatos'       : lst_candidato,
+              'lst_gpo_despesas'    : lst_gpo_despesas,
               'msg'               : msg,
               'user'              : request.user,
             }
   
   return HttpResponse(template.render(context, request))
 
+#------------------------------------------------------
+def gpo_despesas_incluir(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  if request.POST: 
+      form = Gpo_despesas_Form(request.POST)    
+
+      if form.is_valid():
+        form.save()
+   
+        request.session['msg_status'] = 'gpo_despesa incluído com sucesso!'
+        return redirect('financas:cadastro_gpo_despesas')
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:cadastro_gpo_despesas')
+
+  else:
+    
+    template = loader.get_template('financas/cadastro/gpo_despesas/gpo_despesas_editar_incluir.html')
+    form = Gpo_despesas_Form( )  
+
+    context = {
+                'form'       : form,
+                'user'       : request.user,
+                'msg'        : msg
+              }
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def gpo_despesas_editar(request, gpo_despesas_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  gpo_despesa = Grupo_despesa.objects.get(id=gpo_despesas_id)
+  if request.method == 'POST':
+
+    form = Gpo_despesas_Form(request.POST, instance = gpo_despesa)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:cadastro_gpo_despesas')     
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:cadastro_gpo_despesas')    
+    
+  else:
+
+    form = Gpo_despesas_Form(instance = gpo_despesa)
+    template = loader.get_template('financas/cadastro/gpo_despesas/gpo_despesas_editar_incluir.html')
+    context = {
+                'gpo_despesa'     : gpo_despesa,
+                'ano_fiscal'  : ano_fiscal,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def gpo_despesas_excluir(request, gpo_despesas_id):
+  
+  msg =  request.session['msg_status']
+
+  gpo_despesa = Grupo_despesa.objects.get(id = gpo_despesas_id)
+  gpo_despesa.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:cadastro_gpo_despesas') 
+
+
+#----------------------------------------------------------
+# CADASTRO ITEM DE DESPESAS
+#---------------------------------------------------------
+def cadastro_item_despesa(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  lst_item_despesas = Item_despesa.objects.all().order_by('grupo').order_by('codigo') 
+
+  template = loader.get_template('financas/cadastro/item_despesa/cadastro_item_despesa.html')
+  context = {
+              'ano_fiscal'        : ano_fiscal,
+              'lst_item_despesas'    : lst_item_despesas,
+              'msg'               : msg,
+              'user'              : request.user,
+            }
+  
+  return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def item_despesa_incluir(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  if request.POST: 
+      form = Item_despesa_Form(request.POST)    
+
+      if form.is_valid():
+        form.save()
+   
+        request.session['msg_status'] = 'gpo_despesa incluído com sucesso!'
+        return redirect('financas:cadastro_item_despesa')
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:cadastro_item_despesa')
+
+  else:
+    
+    template = loader.get_template('financas/cadastro/item_despesa/item_despesa_editar_incluir.html')
+    form = Item_despesa_Form( )  
+
+    context = {
+                'form'       : form,
+                'user'       : request.user,
+                'msg'        : msg
+              }
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def item_despesa_editar(request, item_despesa_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  item_despesa = Item_despesa.objects.get(id=item_despesa_id)
+  if request.method == 'POST':
+
+    form = Item_despesa_Form(request.POST, instance = item_despesa)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:cadastro_item_despesa')     
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:cadastro_item_despesa')    
+    
+  else:
+
+    form = Item_despesa_Form(instance = item_despesa)
+    template = loader.get_template('financas/cadastro/item_despesa/item_despesa_editar_incluir.html')
+    context = {
+                'ano_fiscal'  : ano_fiscal,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def item_despesa_excluir(request, item_despesa_id):
+  
+  msg =  request.session['msg_status']
+
+  Item_despesa = Item_despesa.objects.get(id = item_despesa_id)
+  Item_despesa.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:cadastro_item_despesa') 

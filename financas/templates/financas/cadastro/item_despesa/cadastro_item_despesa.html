@@ -1,0 +1,60 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Cadastro de item_despesa
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h3>{{empresa}} </h3>
+  <h1> Cadastro de item de despesa</h1>
+  <h4> Eleições: {{ano_fiscal}}</h4>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:item_despesa_incluir' %}"> Cadastrar item_despesa </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <h5 class='my_h5'> Items de despesa</h5>
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>     
+                  <th rowspan="1">Grupo de despesa</th>
+                  <th rowspan="1">Codigo do item </th> 
+                  <th rowspan="1">Descrição </th>         
+
+
+                </tr>
+        
+                {% for item_despesa in lst_item_despesas %}
+                  <tr>
+                    <td><a href= "{% url 'financas:item_despesa_excluir' item_despesa_id=item_despesa.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:item_despesa_editar' item_despesa_id=item_despesa.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ item_despesa.grupo.codigo}}</td>
+                    <td>{{ item_despesa.codigo}}</td>
+                    <td>{{ item_despesa.descricao}}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}

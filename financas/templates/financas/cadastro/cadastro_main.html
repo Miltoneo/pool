@@ -1,12 +1,15 @@
 {% extends "financas/template_page_navegacao.html" %}
 
 {% block title %}
-  Cadastro de Pessoas
+  Cadastro 
 {% endblock %}
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
-  <h1>Cadastro</h1>
+  <h3>{{sistema}} </h3>
+  <h1> Cadastro</h1>
+  <h4> Eleições: {{ano_fiscal}}</h4>
+
 {% endblock %}
 
 
@@ -36,16 +39,16 @@
                             <a href={% url 'financas:cadastro_pessoa' %}  class="btn btn-primary btn-lg" role="button">Cadastrar pessoa</a>
                          <td>
                             <a href={% url 'financas:cadastro_partido' %}  class="btn btn-primary btn-lg" role="button">Cadastrar partido</a>
+                        <td>
+                            <a href={% url 'financas:cadastro_cargo' %}  class="btn btn-primary btn-lg" role="button">Cadastrar cargos</a>  
                       <tr>
                          <td>
                             <a href={% url 'financas:cadastro_candidato' %}  class="btn btn-primary btn-lg" role="button">Cadastrar candidato</a>
                          <td>
-                            <a href={% url 'financas:cadastro_cargo' %}  class="btn btn-primary btn-lg" role="button">Cadastrar grupo de despesas</a>
+                            <a href={% url 'financas:cadastro_gpo_despesas' %}  class="btn btn-primary btn-lg" role="button">Cadastrar grupo de despesas</a>
                          <td>
-                            <a href={% url 'financas:cadastro_main' %}  class="btn btn-primary btn-lg" role="button">Cadastrar item de despesa</a>
+                            <a href={% url 'financas:cadastro_item_despesa' %}  class="btn btn-primary btn-lg" role="button">Cadastrar item de despesa</a>
                       <tr>
-                        <td>
-                            <a href={% url 'financas:cadastro_cargo' %}  class="btn btn-primary btn-lg" role="button">Cadastrar cargos</a>  
 
             </td>
           </tr>

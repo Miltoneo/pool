@@ -1,0 +1,61 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Cadastro de grupo de despesas
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h3>{{sistema}} </h3>
+  <h1>Cadastro de grupo de despesas</h1>
+  <h4> Eleições: {{ano_fiscal}}</h4>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:gpo_despesas_incluir' %}"> Cadastrar grupo de despesas </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              <h5 class='my_h5'> grupo de despesas cadastrados</h5>
+              <table>
+                <tr>
+                  <th rowspan="1">Id</th>          
+                  <th rowspan="1">Codigo </th> 
+                  <th rowspan="1">Descrição </th>          
+                  <th rowspan="1">Limites de gasto </th>  
+
+                </tr>
+        
+                {% for gpo_despesas in lst_gpo_despesas %}
+                  <tr>
+                    <td><a href= "{% url 'financas:gpo_despesas_excluir' gpo_despesas_id=gpo_despesas.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:gpo_despesas_editar' gpo_despesas_id=gpo_despesas.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ gpo_despesas.codigo}}</td> 
+                    <td>{{ gpo_despesas.descricao}}</td> 
+                    <td>{{ gpo_despesas.limite}}</td>                 
+
+                  </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© copyright cabatatu</div>
+    </div>
+  </div>
+
+
+{% endblock %}

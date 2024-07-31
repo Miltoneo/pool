@@ -217,7 +217,7 @@ class Receita(models.Model):
     return f"{self.total}"
 
 #------------------------------------------------
-class grupo_despesa(models.Model):
+class Grupo_despesa(models.Model):
   
   codigo =  models.CharField(max_length=20, null=False, unique=True) 
   descricao = models.CharField(max_length=255, null=False, default="")
@@ -227,9 +227,9 @@ class grupo_despesa(models.Model):
     return f"{self.codigo}"
 
 #------------------------------------------------
-class item_despesa(models.Model):
+class Item_despesa(models.Model):
   
-  grupo = models.ForeignKey(grupo_despesa, on_delete = models.CASCADE)
+  grupo = models.ForeignKey(Grupo_despesa, on_delete = models.CASCADE)
   codigo =  models.CharField(max_length=20, null=False, unique=True) 
   descricao = models.CharField(max_length=255, null=False, default="")
 
@@ -239,7 +239,7 @@ class item_despesa(models.Model):
 #------------------------------------------------
 class Despesa(models.Model):
 
-  item  = models.ForeignKey(item_despesa, on_delete = models.CASCADE)
+  item  = models.ForeignKey(Item_despesa, on_delete = models.CASCADE)
   valor = models.FloatField(null=False, default=0)
 
   def __str__(self):

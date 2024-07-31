@@ -43,3 +43,17 @@ class Candidato_Form(ModelForm):
         model = Candidato
         fields =  "__all__"    
         exclude = ('receita', 'despesa')    
+
+#-----------------------------------------
+class Gpo_despesas_Form(ModelForm):
+    class Meta:
+        model = Grupo_despesa
+        fields =  "__all__"    
+        exclude = ('receita', 'despesa')    
+
+#-----------------------------------------
+class Item_despesa_Form(ModelForm):
+    class Meta:
+        model = Item_despesa
+        fields =  "__all__"    
+        exclude = ('receita', 'despesa')    

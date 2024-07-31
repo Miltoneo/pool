@@ -7,7 +7,7 @@
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <h3>{{empresa}} </h3>
-  <h1> Cadastro candidato</h1>
+  <h1> Cadastro de candidato</h1>
   <h4> Eleições: {{ano_fiscal}}</h4>
 
 {% endblock %}
@@ -29,14 +29,17 @@
         <table> 
           <tr>
             <td>
-              <a> candidatos cadastradas</a>
+              <h5 class='my_h5'> Candidatos cadastrados</h5>
               <table>
                 <tr>
                   <th rowspan="1">id</th>     
                   <th rowspan="1">Codigo</th>
+                  <th rowspan="1">Nome </th> 
                   <th rowspan="1">Partido </th> 
                   <th rowspan="1">Cargo </th> 
-                  <th rowspan="1">Nome </th> 
+                  <th rowspan="1">Cidade </th> 
+                  <th rowspan="1">Estado </th>              
+
 
                 </tr>
         
@@ -44,10 +47,11 @@
                   <tr>
                     <td><a href= "{% url 'financas:candidato_excluir' candidato_id=candidato.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:candidato_editar' candidato_id=candidato.id %}"> Editar </a>{{ forloop.counter }}</td>
                     <td>{{ candidato.codigo}}</td>
-                    <td>{{ candidato.partido.sigla}}</td>
-                    <td>{{ candidato.cargo.nome}}</td>                    
                     <td>{{ candidato.pessoa.nome}}</td>
-
+                    <td>{{ candidato.partido.sigla}}</td>
+                    <td>{{ candidato.cargo.nome}}</td>  
+                    <td>{{ candidato.pessoa.cidade.nome}}</td>
+                    <td>{{ candidato.pessoa.cidade.estado}}</td>
                   </tr>
                 {% endfor %}
               </table>
