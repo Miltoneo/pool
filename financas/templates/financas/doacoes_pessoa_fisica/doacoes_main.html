@@ -27,20 +27,23 @@
         <table> 
           <tr>
             <td>
-
-              <h5 class='my_h5'> Doadores</h5>
-              
               <table>
                 <tr>
                   <th rowspan="1">id</th>     
                   <th rowspan="1">CPF</th>
                   <th rowspan="1">Nome </th> 
                   <th rowspan="1">Rendimentos IRPF2024 </th>     
-                  <th rowspan="1">Limite para doação financeira </th>                           
-                  <th rowspan="1">Total financeiro doado </th> 
-                  <th rowspan="1">Limite para doação estimavel </th> 
-                  <th rowspan="1">Total de estimável doado </th> 
-                  <th rowspan="1">Total recursos doados </th>          
+
+                  <th rowspan="1">[Financeiro] Limite para doação  </th>                           
+                  <th rowspan="1">[Financeiro] Atual doado   </th> 
+
+                  <th rowspan="1">[Estimavel] Limite para doação:  </th> 
+                  <th rowspan="1">[Estimavel]  Atual doado: </th> 
+
+                  <th rowspan="1">[financeiro + estimável] Limite total para doação  </th> 
+                  <th rowspan="1">[financeiro + estimável] Total atual doado </th>                   
+  
+                  <th rowspan="1">Situação doação </th>  
                 </tr>
         
                 {% for doador in lst_doadores %}
@@ -48,12 +51,19 @@
                     <td><a href= "{% url 'financas:doador_excluir' doador_id=doador.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:doador_editar' doador_id=doador.id %}"> Editar </a>{{ forloop.counter }}</td>
                     <td>{{ doador.pessoa.cpf}}</td>
                     <td><a href= "{% url 'financas:lst_doacoes_doador' doador.id %}"> {{ doador.pessoa.nome}}</td>
-                    <td>{{ doador.pessoa.rendimento_bruto_irpf2024}}</td>  
-                    <td>{{ doador.val_limite_doacao_financeira}}</td>  
-                    <td>{{ doador.total_doacao_financeira}}</td>
-                    <td>{{ doador.val_limite_doacao_estimavel}}</td>
-                    <td>{{ doador.total_doacao_estimavel}}</td>
-                    <td>{{ doador.total_doacao_totalizado}}</td>
+                    <td>{{ doador.pessoa.rendimento_bruto_irpf2024|floatformat:2}}</td> 
+
+                    <td>{{ doador.val_limite_doacao_financeira|floatformat:2}}</td>  
+                    <td>{{ doador.total_doacao_financeira|floatformat:2}}</td>
+
+                    <td>{{ doador.val_limite_doacao_estimavel|floatformat:2}}</td>
+                    <td>{{ doador.total_doacao_estimavel|floatformat:2}}</td>
+
+                    <td>{{ doador.val_limite_total|floatformat:2}}</td>
+                    <td>{{ doador.total_doacao_totalizado|floatformat:2}}</td>
+
+                    <td>{{ doador.situacao}}</td>                   
+
                   </tr>
                 {% endfor %}
               </table>

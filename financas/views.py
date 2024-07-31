@@ -74,8 +74,8 @@ def candidato_receitas(request, candidato_id):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
-
   request.session['candidato_id'] =   candidato_id
+
   candidato = Candidato.objects.all
 
   template = loader.get_template('financas/receitas/receitas.html')
@@ -96,30 +96,32 @@ def doacoes_main(request):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
-  candidadto_id = request.session['candidato_id']
+  candidato_id = request.session['candidato_id']
 
-  candidato = Candidato.objects.get(id=candidadto_id)
-  lst_doadores = Doador.objects.all
+  candidato = Candidato.objects.get(id=candidato_id)
+  lst_doadores =  Doador.objects.filter(candidato = candidato)
 
   template = loader.get_template('financas/doacoes_pessoa_fisica/doacoes_main.html') 
   context = {
               'ano_fiscal'        : ano_fiscal,
-              'candidato'       : candidato,
+              'candidato'         : candidato,
               'lst_doadores'      : lst_doadores,
+              
               'msg'               : msg,
               'user'              : request.user,
             }
-  
   return HttpResponse(template.render(context, request))
 
-
-#------------------------------------------------------
 #------------------------------------------------------
 def lst_doacoes_doador(request, doador_id):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']
 
+  request.session['doador_id'] = doador_id
+
+  candidato = Candidato.objects.get(id=candidato_id)
   doador = Doador.objects.get(id=doador_id)
   lst_doacoes = Doacoes.objects.filter(doador = doador_id).order_by('data').order_by('tipo_doacao')
 
@@ -127,6 +129,7 @@ def lst_doacoes_doador(request, doador_id):
   context = {
               'ano_fiscal'        : ano_fiscal,
               'doador'            : doador,
+              'candidato'         : candidato,
               'lst_doacoes'       : lst_doacoes,
               'msg'               : msg,
               'user'              : request.user,
@@ -135,33 +138,26 @@ def lst_doacoes_doador(request, doador_id):
   return HttpResponse(template.render(context, request))
 
 #------------------------------------------------------
-#------------------------------------------------------
 def doacao_incluir(request, doador_id):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
-
+  
   doador = Doador.objects.get(id=doador_id)
   if request.POST: 
       form = Doacao_Form(request.POST)    
 
       if form.is_valid():
-        doacao = form.save(commit=False)
+        
+        doacao = form.save(commit= False)
         doacao.doador = doador
-
-        # totaliza doações
-        if(doacao.tipo_doacao == TIPO_DOACAO_FINANCEIRA):
-          doador.total_doacao_financeira += doacao.valor
-        else:
-          doador.total_doacao_estimavel += doacao.valor 
-
-        doador.total_doacao_totalizado = doador.total_doacao_financeira + doador.total_doacao_estimavel 
-
-        # save
-        doador.save()
         doacao.save()
 
         request.session['msg_status'] = 'doador incluído com sucesso!'
+
+        # Totaliza doações e emite condição do doador quanto aos limites
+        request.session['msg_status'] = totaliza_doacoes(doador_id)
+
         return redirect('financas:lst_doacoes_doador', doador_id)
       else:
         request.session['msg_status'] = 'Falha inclusão !'
@@ -180,6 +176,65 @@ def doacao_incluir(request, doador_id):
                 'user'       : request.user,
               }
     return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def doacao_editar(request, doacao_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']  
+  doador_id = request.session['doador_id']
+
+  candidato = Candidato.objects.get(id=candidato_id)
+  doador = Doador.objects.get(id=doador_id)
+  doacao = Doacoes.objects.get(id = doacao_id)
+
+  if request.method == 'POST':
+
+    form = Doacao_Form(request.POST, instance = doacao)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+
+      # Totaliza doações e emite condição do doador quanto aos limites
+      totaliza_doacoes(doador_id)
+
+      return redirect('financas:lst_doacoes_doador', doador_id) 
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:lst_doacoes_doador', doador_id) 
+    
+  else:
+
+    form = Doacao_Form(instance = doacao)
+    template = loader.get_template('financas/doacoes_pessoa_fisica/doacao_editar_incluir.html')
+    context = {
+                'ano_fiscal'  : ano_fiscal,
+                'candidato'   : candidato,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def doacao_excluir(request, doacao_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  doador_id = request.session['doador_id']
+
+
+  doacao = Doacoes.objects.get(id=doacao_id)
+  doacao.delete()
+
+  # Totaliza doações e emite condição do doador quanto aos limites
+  totaliza_doacoes(doador_id)
+
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:lst_doacoes_doador', doador_id)  
   
 #----------------------------------------------------------
 # AutoFinanciamento
@@ -214,11 +269,9 @@ def autofinancia_lancamentos(request, candidato_id):
   ano_fiscal = request.session['ano_fiscal']
 
   candidato = Candidato.objects.get(id=candidato_id)
-
   lst_lancamentos = Doacoes.objects.filter(candidato = candidato).order_by('data').order_by('tipo_doacao')
 
   template = loader.get_template('financas/autofinancia/autofinancia_lancamentos.html')
-
   context = {
                 'ano_fiscal' : ano_fiscal,
                 'candidato'  : candidato,
@@ -333,22 +386,3 @@ def autofinanciameto_excluir(request, doacao_id):
 
 
 
-#----------------------------------------------------------
-# TETO DE GASTOS
-#---------------------------------------------------------
-def teto_gatos_main(request):
-  
-  msg =  request.session['msg_status']
-  ano_fiscal = request.session['ano_fiscal']
-
-  lst_tgastos = Teto_gasto_cargo.objects.all().order_by('cidade')
-
-  template = loader.get_template('financas/teto_gastos/tgastos_main.html') 
-  context = {
-              'ano_fiscal'        : ano_fiscal,
-              'lst_tgastos'       : lst_tgastos,
-              'msg'               : '123',
-              'user'              : request.user,
-            }
-  
-  return HttpResponse(template.render(context, request))

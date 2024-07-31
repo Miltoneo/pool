@@ -664,7 +664,7 @@ def item_despesa_editar(request, item_despesa_id):
 
   item_despesa = Item_despesa.objects.get(id=item_despesa_id)
   if request.method == 'POST':
-
+     
     form = Item_despesa_Form(request.POST, instance = item_despesa)
     if form.is_valid():
       form.save()
@@ -707,14 +707,19 @@ def doador_incluir(request):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']
+
+  candidato = Candidato.objects.get(id=candidato_id)
 
   if request.POST: 
       form = Doador_Form(request.POST)    
 
       if form.is_valid():
         doador = form.save(commit=False)
+        doador.candidato = candidato
         doador.val_limite_doacao_estimavel = LIMITE_DOACAO_ESTIMAVEL
         doador.val_limite_doacao_financeira = doador.pessoa.rendimento_bruto_irpf2024 * (LIMITE_PERCENTUAL_DOACAO_SOBRE_RENDIMENTO_IRPF2024 / 100)
+        doador.val_limite_total = doador.val_limite_doacao_estimavel + doador.val_limite_doacao_financeira
         doador.save()
 
         request.session['msg_status'] = 'doador incluído com sucesso!'
@@ -780,8 +785,26 @@ def doador_excluir(request, doador_id):
   return redirect('financas:doacoes_main') 
 
 #----------------------------------------------------------
-# CADASTRO DOARDOR
+# CADASTRO TETO GASTOS
 #---------------------------------------------------------
+def teto_gatos_main(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  lst_tgastos = Teto_gasto_cargo.objects.all().order_by('cidade', 'cargo__nome')
+
+  template = loader.get_template('financas/teto_gastos/tgastos_main.html') 
+  context = {
+              'ano_fiscal'        : ano_fiscal,
+              'lst_tgastos'       : lst_tgastos,
+              'msg'               : '123',
+              'user'              : request.user,
+            }
+  
+  return HttpResponse(template.render(context, request))
+
+
 def tgastos_incluir(request):
   
   msg =  request.session['msg_status']

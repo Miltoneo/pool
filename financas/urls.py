@@ -62,6 +62,8 @@ urlpatterns = [
     path('tgastos_editar/<int:tgastos_id>/', views_cadastro.tgastos_editar, name='tgastos_editar'),
     path('tgastos_excluir/<int:tgastos_id>/', views_cadastro.tgastos_excluir, name='tgastos_excluir'),
 
+  # Menu teto gastos
+    path('teto_gatos_main/', views_cadastro.teto_gatos_main, name='teto_gatos_main'),
   #---------------------------------------------------------------------------------------
   # VIEWS
   #---------------------------------------------------------------------------------------
@@ -72,6 +74,8 @@ urlpatterns = [
     path('doacoes_main/', views.doacoes_main, name='doacoes_main'),
     path('lst_doacoes_doador/<int:doador_id>', views.lst_doacoes_doador, name='lst_doacoes_doador'),    
     path('doacao_incluir/<int:doador_id>/', views.doacao_incluir, name='doacao_incluir'),
+    path('doacao_editar/<int:doacao_id>/', views.doacao_editar, name='doacao_editar'),
+    path('doacao_excluir/<int:doacao_id>/', views.doacao_excluir, name='doacao_excluir'),
 
   # Menu autofinacimento
     path('autofinancia_main/', views.autofinancia_main, name='autofinancia_main'),
@@ -82,8 +86,7 @@ urlpatterns = [
     path('autofinanciameto_editar/<int:doacao_id>/', views.autofinanciameto_editar, name='autofinanciameto_editar'),
     path('autofinanciameto_excluir/<int:doacao_id>/', views.autofinanciameto_excluir, name='autofinanciameto_excluir'),
 
-  # Menu teto gastos
-    path('teto_gatos_main/', views.teto_gatos_main, name='teto_gatos_main'),
+
 
 ]
  

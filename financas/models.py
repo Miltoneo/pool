@@ -42,17 +42,15 @@ class Cidade(models.Model):
 class Pessoa(models.Model):
   cpf= models.CharField(max_length=255,null=False, unique=True)
   nome = models.CharField(max_length=255,null=False)
-  cidade =  models.ForeignKey(Cidade, on_delete = models.CASCADE, unique=False)
-  profissão = models.CharField(null=True, max_length=255)
+  cidade =  models.ForeignKey(Cidade, on_delete = models.CASCADE, null=False )
+  profissao = models.CharField( max_length=255,null=True)
   dnascimento = models.DateField(null=True)
   endereco= models.CharField(max_length=255,null=True)
   cep= models.CharField(max_length=255,null=True) 
   fone= models.CharField(max_length=255,null=True) 
   email= models.CharField(max_length=255,null=True) 
-  status = models.IntegerField(null=True)
-  rendimento_bruto_irpf2024 = models.FloatField(null=True, default=0)
+  rendimento_bruto_irpf2024 = models.FloatField(null=False, default=0)
   
-
   def __str__(self):
     return f"{self.nome} "
 
@@ -76,12 +74,12 @@ class Cargo(models.Model):
 #------------------------------------------------
 class Teto_gasto_cargo(models.Model):
   
-  cidade  =  models.ForeignKey(Cidade, on_delete = models.CASCADE, unique=False)
+  cidade =  models.ForeignKey(Cidade, on_delete = models.CASCADE, unique=False)
   cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE, unique=False)
-  valor =   models.FloatField(null=False, default=0)
+  valor  =   models.FloatField(null=False, default=0)
 
   def __str__(self):
-    return f"{self.cidade}"
+    return f"{self.cidade} {self.cargo.nome}"
 
 #------------------------------------------------
 class Partido(models.Model):
@@ -237,7 +235,6 @@ class Candidato(models.Model):
   cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE,   null=True)
   receita = models.ForeignKey(Receita, on_delete = models.CASCADE, null=True)
   despesa = models.ForeignKey(Despesa, on_delete = models.CASCADE, null=True)
-
   #
   val_percent_permitido_autofinanciamento = models.FloatField(null=False, default=0) # sobre o teto de gasto para o cargo
   val_permitido_autofinanciamento       = models.FloatField(null=False, default=0)   # val_percent * teto de gasto
@@ -249,16 +246,58 @@ class Candidato(models.Model):
   def __str__(self):
     return f"{self.codigo} {self.pessoa.nome}" 
 
+
+
+#------------------------------------------------
+class Doador(models.Model):
+
+  pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, null=False)
+  candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, null=False)
+
+  val_limite_doacao_financeira = models.FloatField(null=False, default=0) 
+  val_limite_doacao_estimavel = models.FloatField(null=False, default=0) 
+  val_limite_total  = models.FloatField(null=False, default=0) 
+  total_doacao_financeira = models.FloatField(null=False, default=0) 
+  total_doacao_estimavel = models.FloatField(null=False, default=0) 
+  total_doacao_totalizado=  models.FloatField(null=False, default=0) 
+  situacao = models.CharField(max_length=255,null=False,  default='Normal')
+
+  def __str__(self):
+    return f"{self.pessoa.cpf} {self.pessoa.nome}" 
   
+#------------------------------------------------
+class Doacoes(models.Model):
+
+  class tipo_t(models.IntegerChoices):
+      FINANCEIRO          = TIPO_DOACAO_FINANCEIRA, "FINANCEIRO"
+      ESTIMAVEL_VEICULOS  = TIPO_DOACAO_ESTIMAVEL_VEICULOS,  "CESSÃO DE VEICULOS "
+      ESTIMAVEL_BENS      = TIPO_DOACAO_ESTIMAVEL_BENS,  "CESSÃO DE BENS "
+
+  doador = models.ForeignKey(Doador, on_delete = models.CASCADE, null=True)
+  data = models.DateField(null=True)
+  valor = models.FloatField(null=False, default=0) 
+  tipo_doacao=  models.PositiveSmallIntegerField(
+                    choices=tipo_t.choices, 
+                    default=tipo_t.FINANCEIRO
+                      )
+
+  def __str__(self):
+    return f"{self.tipo_doacao}" 
+
+
+
+"""
 #------------------------------------------------
 class Doador(models.Model):
 
   pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
   val_limite_doacao_financeira = models.FloatField(null=False, default=0) 
   val_limite_doacao_estimavel = models.FloatField(null=False, default=0) 
+  val_limite_total  = models.FloatField(null=False, default=0) 
   total_doacao_financeira = models.FloatField(null=False, default=0) 
   total_doacao_estimavel = models.FloatField(null=False, default=0) 
   total_doacao_totalizado=  models.FloatField(null=False, default=0) 
+  situacao = models.CharField(max_length=255,null=False,  default='Normal')
 
   def __str__(self):
     return f"{self.pessoa.cpf} {self.pessoa.nome}" 
@@ -282,3 +321,5 @@ class Doacoes(models.Model):
 
   def __str__(self):
     return f"{self.tipo_doacao}" 
+
+"""

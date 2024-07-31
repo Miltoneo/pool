@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block titulo %}
-  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Lista de doacoes</h1>
-  <b>  Doador: {{doador.pessoa.nome}}</b>
-  <p>
-  <b>  CPF: {{doador.pessoa.cpf}}</b>
+  <h1> Lista de Doações</h1>
+  <h5> Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6> Cargo: {{candidato.cargo.nome}}</h6>
+  <h6> Doador: {{doador.pessoa.nome}}</h6>
+  <h6> CPF:  {{doador.pessoa.cpf}}</h6>
 
 {% endblock %}
 
@@ -40,7 +41,7 @@
         
                 {% for doacao in lst_doacoes %}
                   <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <td><a href= "{% url 'financas:doacao_excluir' doacao_id=doacao.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:doacao_editar' doacao_id=doacao.id %}"> Editar </a>{{ forloop.counter }}</td>
                     <td>{{ doacao.data}}</td>
                     <td>{{ doacao.tipo_doacao}}</td>  
                     <td>{{ doacao.valor}}</td>  

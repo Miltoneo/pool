@@ -15,12 +15,24 @@ class candidato_Form(ModelForm):
 
 #-----------------------------------------
 class cidade_Form(ModelForm):
+   
     class Meta:
         model = Cidade
         fields =  "__all__"
 
 #-----------------------------------------
 class Pessoa_Form(ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['profissao'].required = False
+        self.fields['dnascimento'].required = False
+
+        self.fields['endereco'].required = False
+        self.fields['cep'].required = False
+        self.fields['fone'].required = False
+        self.fields['email'].required = False
+
     class Meta:
         model = Pessoa
         fields =  "__all__"
