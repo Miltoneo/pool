@@ -1,0 +1,79 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Autofinanciamento
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <b>  Eleições: {{ano_fiscal}}</b>
+  <h1> Resumo da contratação de pessoal</h1>
+  <h5> Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6> Cargo: {{candidato.cargo.nome}}</h6>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="{% url 'financas:pessoal_main'%}">Relatorio</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'financas:desp_pessoal_lancamentos' candidato_id=candidato.id %}">Lançamentos</a></li>
+
+  </ul>
+</nav>
+
+
+    <div class="main">
+
+      <!-- barra ações -->
+      <div>
+        <a href= "{% url 'financas:desp_pessoal_situacao' %}"> Atualizar relatorio pessoal contratado </a>
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+              
+              <table>
+                <h5 class= 'my_h5'> Situação: {{situacao}}
+                <tr>
+                  <th rowspan="1">Item</th>     
+                  <th rowspan="1">Valor</th>     
+                </tr>
+
+                <tr>
+                  <td rowspan="1">Quantidade de pessoas contratadas </td>
+                  <td>{{ desp_pessoal.qte_pessoal}}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Total valor contratado </td>
+                  <td>{{ desp_pessoal.total_valor_contratado }} </td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Total valor cessão </td>
+                  <td>{{ desp_pessoal.total_valor_cessao}}</td>
+                </tr>
+
+                <tr>
+                  <td rowspan="1"> Total geral </td>
+                  <td>{{  desp_pessoal.total }}</td>
+                </tr>
+
+
+
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}

@@ -88,7 +88,14 @@ urlpatterns = [
     path('autofinanciameto_editar/<int:doacao_id>/', views.autofinanciameto_editar, name='autofinanciameto_editar'),
     path('autofinanciameto_excluir/<int:doacao_id>/', views.autofinanciameto_excluir, name='autofinanciameto_excluir'),
 
+  # Menu gestao pessoal 
+    path('pessoal_main/', views.pessoal_main, name='pessoal_main'),
+    path('desp_pessoal_situacao/', views.desp_pessoal_situacao, name='desp_pessoal_situacao'),
+    path('desp_pessoal_lancamentos/<int:candidato_id>/', views.desp_pessoal_lancamentos, name='desp_pessoal_lancamentos'),
 
+    path('desp_pessoal_incluir/<int:candidato_id>/', views.desp_pessoal_incluir, name='desp_pessoal_incluir'),
+    path('desp_pessoal_editar/<int:doacao_id>/', views.desp_pessoal_editar, name='desp_pessoal_editar'),
+    path('desp_pessoal_excluir/<int:doacao_id>/', views.desp_pessoal_excluir, name='desp_pessoal_excluir'),
 
 ]
  

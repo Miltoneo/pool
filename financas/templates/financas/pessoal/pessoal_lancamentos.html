@@ -1,0 +1,75 @@
+{% extends "financas/template_page_navegacao.html" %}
+
+{% block title %}
+  Doações
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <b>  Eleições: {{ano_fiscal}}</b>
+  <h1> Lançamentos de pessoal</h1>
+  <h5> Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6> Cargo: {{candidato.cargo.nome}}</h6>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="{% url 'financas:pessoal_main'%}">Relatorio</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'financas:desp_pessoal_lancamentos' candidato_id=candidato.id %}">Lançamentos</a></li>
+
+  </ul>
+</nav>
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+        <a href= "{% url 'financas:desp_pessoal_incluir' candidato.id %}"> Incluir pessoa contratada </a>
+      </div>
+        <table> 
+          <tr>
+            <td>
+            
+              <table>
+                <tr>
+                  <th rowspan="1">id</th>  
+                  <th rowspan="1">Data</th>             
+                  <th rowspan="1">Nome</th>
+                  <th rowspan="1">Funcao</th>
+                  <th rowspan="1">Item despesa </th> 
+                  <th rowspan="1">Valor contratado</th>
+                  <th rowspan="1">Valor cessão</th>
+                  <th rowspan="1">Valor total </th>   
+                </tr>
+        
+                {% for pessoa_contratada in lst_pessoas_contratada %}
+                  <tr>
+                    <td><a href= "{% url 'financas:desp_pessoal_excluir' doacao_id=pessoa_contratada.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:desp_pessoal_editar' doacao_id=pessoa_contratada.id %}"> Editar </a>{{ forloop.counter }}</td>
+                    <td>{{ pessoa_contratada.data}}</td>
+                    <td>{{ pessoa_contratada.nome}}</td>  
+                    <td>{{ pessoa_contratada.funcao}}</td>  
+
+                    <td>{{ pessoa_contratada.item_despesa}}</td>
+                    <td>{{ pessoa_contratada.valor_contratado}}</td>  
+                    <td>{{ pessoa_contratada.valor_cessao}}</td>
+                    <td>{{ pessoa_contratada.valor_contratado|add:pessoa_contratada.valor_cessao }}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+    </div>
+  </div>
+
+
+{% endblock %}

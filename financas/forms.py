@@ -85,14 +85,18 @@ class Doacao_Form(ModelForm):
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
                     }
-
-
 #-----------------------------------------
 class Teto_gastos_Form(ModelForm):
     class Meta:
         model = Teto_gasto_cargo
         fields =  "__all__"   
 
-
-
-
+#-----------------------------------------
+class Pessoa_contrato_Form(ModelForm):
+    class Meta:
+        model = Pessoa_contratada
+        fields =  "__all__"   
+        widgets = {
+                    'data': widgets.DateInput(attrs={'type': 'date'}),
+                    }
+        exclude = ('despesa_pessoal', 'valor_total')    

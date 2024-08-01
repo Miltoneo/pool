@@ -71,7 +71,6 @@ def chk_doacoes (request):
     candidato = Candidato.objects.get(id=candidadto_id)   
     lst_doadores =  Doador.objects.filter(candidato = candidato).exclude(id=auto_doador_id)
         
-        
     try:
         for doador in lst_doadores:
             
@@ -102,3 +101,42 @@ def chk_doacoes (request):
          mensagem ='FALHA TOTALIZAÇÃO'
 
     return mensagem
+
+#-----------------------------------------------
+def chk_despesa_pessoal (request):
+    
+    resultado = 'normal'
+
+    candidadto_id = request.session['candidato_id']
+    candidato = Candidato.objects.get(id=candidadto_id)
+    
+    despesa_pessoal = Despesa_pessoal.objects.get(candidato=candidato) 
+    lst_Pessoas = Pessoa_contratada.objects.filter(despesa_pessoal = despesa_pessoal)
+
+    despesa_pessoal.total_valor_contratado = 0
+    despesa_pessoal.total_valor_cessao = 0
+    despesa_pessoal.total = 0
+    despesa_pessoal.qte_pessoal = 0
+    for pessoa in lst_Pessoas:
+
+        despesa_pessoal.total_valor_contratado += pessoa.valor_contratado
+        despesa_pessoal.total_valor_cessao += pessoa.valor_cessao
+        despesa_pessoal.total = despesa_pessoal.total_valor_contratado + despesa_pessoal.total_valor_cessao
+        despesa_pessoal.qte_pessoal += 1 
+
+    limite_pessoal = 0
+    if (candidato.cargo.tipo_cargo == ITEM_CARGO_VEREADOR ):
+        limite_pessoal = LIMITE_PESSOAL_VEREADOR
+    elif (candidato.cargo.tipo_cargo == ITEM_CARGO_PREFEITO ):      
+        limite_pessoal = LIMITE_PESSOAL_PREFEITO
+
+    if (despesa_pessoal.qte_pessoal > limite_pessoal):
+        despesa_pessoal.situacao = 'ULTRAPASSA LIMITE DE PESSOAL PARA O CARGO'
+        resultado = 'ULTRAPASSA LIMITE DE PESSOAL PARA O CARGO'
+    else:
+        despesa_pessoal.situacao = 'Normal' 
+    
+    despesa_pessoal.save()
+    return resultado
+
+

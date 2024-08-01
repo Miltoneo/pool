@@ -18,10 +18,18 @@ LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO                  = 10        #%
 LIMITE_RENDIMENTO_ISENTO                              =  30639.00
 LIMITE_DOACAO_ESTIMAVEL                               =  40000.00
 
+#limite pessoal
+LIMITE_PESSOAL_VEREADOR =  225
+LIMITE_PESSOAL_PREFEITO =  450
+
 # Tipo de doacao
 TIPO_DOACAO_FINANCEIRA = 0
 TIPO_DOACAO_ESTIMAVEL_VEICULOS = 1
 TIPO_DOACAO_ESTIMAVEL_BENS = 3
+
+# Tipo CONTABIL PESSOAL
+PESSOAL_CONTABIL_CONTRATO = 0
+PESSOAL_CONTABIL_CESSAO = 1
 
 #------------------------------------------------
 class limites(models.Model):
@@ -59,7 +67,7 @@ class Cargo(models.Model):
   
   class Cargo_t(models.IntegerChoices):
       VEREADOR = ITEM_CARGO_VEREADOR, "VEREADOR"
-      PREFEITOVICE = ITEM_CARGO_PREFEITO, "PREFEITO"
+      PREFEITO = ITEM_CARGO_PREFEITO, "PREFEITO"
       VICE_PREFEITO = ITEM_CARGO_VICE_PREFEITO, "VICE-PREFEITO"
 
   nome =  models.CharField(max_length=50, null=False, unique=True) 
@@ -284,3 +292,40 @@ class Doacoes(models.Model):
   def __str__(self):
     return f"{self.tipo_doacao}" 
 
+#------------------------------------------------
+class Despesa_pessoal(models.Model):
+
+  candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, null=False)
+  qte_pessoal =  models.IntegerField(null=False, default=0) 
+  total_valor_contratado = models.FloatField(null=False, default=0) 
+  total_valor_cessao = models.FloatField(null=False, default=0) 
+  total = models.FloatField(null=False, default=0)  
+  situacao = models.CharField(max_length=255,  default='Normal', null=False)
+
+  def __str__(self):
+    return f"{self.candidato}" 
+
+#------------------------------------------------
+class Pessoa_contratada(models.Model):
+
+  class tipo_t(models.IntegerChoices):
+      CONTRATO  = PESSOAL_CONTABIL_CONTRATO, "CONTRATO"
+      CESSAO      = PESSOAL_CONTABIL_CESSAO,   "CESSÃO "
+
+
+  despesa_pessoal = models.ForeignKey(Despesa_pessoal, on_delete = models.CASCADE, null=False)
+  data = models.DateField(null=False)
+  nome = models.CharField(max_length=255,  default='-', null=False)
+  funcao = models.CharField(max_length=255,  default='-', null=False)
+  item_despesa = models.ForeignKey(Item_despesa, on_delete = models.CASCADE, null=False)
+
+  tipo_contabil=  models.PositiveSmallIntegerField(
+                      choices=tipo_t.choices, 
+                      default=tipo_t.CONTRATO
+                      )
+  valor_contratado = models.FloatField(null=False, default=0) 
+  valor_cessao = models.FloatField(null=False, default=0) 
+  valor_total = models.FloatField(null=False, default=0)  
+
+  def __str__(self):
+    return f"{self.nome}" 
