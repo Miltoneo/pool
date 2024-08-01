@@ -153,3 +153,39 @@ def despesa_atualiza_resumo(request):
   request.session['msg_status'] = totaliza_grupo_despesas(request)
 
   return redirect('financas:despesas_main')
+
+#------------------------------------------------------
+def grupo_despesa_editar(request, grupo_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']
+
+  candidato = Candidato.objects.get(id= candidato_id)
+
+  grupo_despesa = Grupo_despesa.objects.get(id=grupo_id)
+  if request.POST: 
+      form = Grupo_despesa_Form(request.POST, instance=grupo_despesa)    
+      if form.is_valid():
+        form.save()
+
+        request.session['msg_status'] = 'doador incluído com sucesso!'
+        return redirect('financas:despesas_lancamentos', candidato_id)
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:despesas_lancamentos', candidato_id)
+
+  else:
+    
+    template = loader.get_template('financas/despesas/grupo_despesa_editar.html')
+    form = Grupo_despesa_Form(instance=grupo_despesa)  
+
+    context = {
+                'ano_fiscal' : ano_fiscal,
+                'candidato'  : candidato,
+                'grupo_despesa': grupo_despesa,
+                'form'       : form,
+                'msg'        : msg,
+                'user'       : request.user,
+              }
+    return HttpResponse(template.render(context, request))

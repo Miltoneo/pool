@@ -7,8 +7,9 @@
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Despesa de campanha: incluir/editar</h1>
-  <h5> Candidato: {{candidato.pessoa.nome}}</h5>
+  <h2> Grupo de despesa:</h2>
+  <h1>  {{grupo_despesa.descricao}} </h1>
+  <h6> Candidato: {{candidato.pessoa.nome}}</h6>
   <h6> Cargo: {{candidato.cargo.nome}}</h6>
 
 {% endblock %}

@@ -109,6 +109,7 @@ urlpatterns = [
     path('despesas_editar/<int:despesa_id>/', views_despesas.despesas_editar, name='despesas_editar'),
     path('despesas_excluir/<int:despesa_id>/', views_despesas.despesas_excluir, name='despesas_excluir'),
     path('despesa_atualiza_resumo/', views_despesas.despesa_atualiza_resumo, name='despesa_atualiza_resumo'),
+    path('grupo_despesa_editar/<int:grupo_id>/', views_despesas.grupo_despesa_editar, name='grupo_despesa_editar'),
 
 ]
  

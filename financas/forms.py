@@ -104,3 +104,13 @@ class Despesa_Form(ModelForm):
                     'data': widgets.DateInput(attrs={'type': 'date'}),
                     }
         exclude = ('candidato',)    
+
+#-----------------------------------------
+class Grupo_despesa_Form(ModelForm):
+    class Meta:
+        model = Grupo_despesa
+        fields =  "__all__"   
+        widgets = {
+                    'data': widgets.DateInput(attrs={'type': 'date'}),
+                    }
+        exclude = ('codigo','descricao','total_contratado','total_estimavel', 'total_nao_pago',)    

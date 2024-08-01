@@ -220,10 +220,10 @@ def totaliza_grupo_despesas (request):
                                                 .values('grupo')\
                                                 .order_by('grupo')\
                                                 .annotate(total_contratado=Sum('valor_contratado')) \
-                                                .annotate(total_estimavel=Sum('valor_estimavel')) \
-                                                .annotate(total_pago_FEFC=Sum('valor_pago_FEFC')) \
-                                                .annotate(total_pago_fundo_partidario=Sum('valor_pago_fundo_partidario')) \
-                                                .annotate(total_pago_outros_rec=Sum('valor_pago_outros_rec'))
+                                                .annotate(total_estimavel=Sum('valor_estimavel')) 
+                                                #.annotate(total_pago_FEFC=Sum('valor_pago_FEFC')) \
+                                                #.annotate(total_pago_fundo_partidario=Sum('valor_pago_fundo_partidario')) \
+                                                #.annotate(total_pago_outros_rec=Sum('valor_pago_outros_rec'))
                                                 #.annotate(total_nao_pago=Sum('total_nao_pago'))
         
 
@@ -232,9 +232,10 @@ def totaliza_grupo_despesas (request):
             grupo = Grupo_despesa.objects.get(id=grupo)
             grupo.total_contratado = sum_despesa.get('total_contratado')
             grupo.total_estimavel = sum_despesa.get('total_estimavel')
-            grupo.total_pago_FEFC = sum_despesa.get('total_pago_FEFC')
-            grupo.total_pago_fundo_partidario = sum_despesa.get('total_pago_fundo_partidario')
-            grupo.total_pago_outros_rec = sum_despesa.get('total_pago_outros_rec')
+
+            #grupo.total_pago_FEFC = sum_despesa.get('total_pago_FEFC')
+            #grupo.total_pago_fundo_partidario = sum_despesa.get('total_pago_fundo_partidario')
+            #grupo.total_pago_outros_rec = sum_despesa.get('total_pago_outros_rec')
             grupo.total_nao_pago = (grupo.total_contratado + grupo.total_estimavel) - (grupo.total_pago_FEFC  \
                                                                                     + grupo.total_pago_fundo_partidario \
                                                                                     + grupo.total_pago_outros_rec)

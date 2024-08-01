@@ -7,7 +7,7 @@
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Resumo das despesas por grupo</h1>
+  <h1> Totalização das despesa por grupo</h1>
   <h5> Candidato: {{candidato.pessoa.nome}}</h5>
   <h6> Cargo: {{candidato.cargo.nome}}</h6>
 
@@ -51,7 +51,7 @@
         
                 {% for grupo_despesa in lst_grupo_despesas %}
                   <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <td><a href= "{% url 'financas:grupo_despesa_editar' grupo_id=grupo_despesa.id %}"> Editar </a>{{ forloop.counter }}</td>
                     <td>{{ grupo_despesa.descricao}}</td>  
 
                     <td>{{ grupo_despesa.total_contratado}}</td>  
