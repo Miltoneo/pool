@@ -42,7 +42,7 @@ class Grupo_despesa(models.Model):
   
   codigo =  models.CharField(max_length=20, null=False, unique=True) 
   descricao = models.CharField(max_length=255, null=False, default="")
-  
+
   total_contratado = models.FloatField(null=False, default=0) 
   total_estimavel = models.FloatField(null=False, default=0) 
   total_pago_FEFC = models.FloatField(null=False, default=0) 
@@ -221,7 +221,6 @@ class Receita(models.Model):
   def __str__(self):
     return f"{self.total}"
 
-
 #------------------------------------------------
 class Candidato(models.Model):
 
@@ -229,9 +228,7 @@ class Candidato(models.Model):
   pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
   partido = models.ForeignKey(Partido, on_delete = models.CASCADE, null=True)
   cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE,   null=True)
-  #receita = models.ForeignKey(Receita, on_delete = models.CASCADE, null=True)
-  #despesa = models.ForeignKey(Despesas, on_delete = models.CASCADE, null=True)
-  #
+
   val_percent_permitido_autofinanciamento = models.FloatField(null=False, default=0) # sobre o teto de gasto para o cargo
   val_permitido_autofinanciamento       = models.FloatField(null=False, default=0)   # val_percent * teto de gasto
   total_autofin_financeiro = models.FloatField(null=False, default=0) 

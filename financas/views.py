@@ -537,6 +537,7 @@ def desp_pessoal_excluir(request, doacao_id):
 
   return redirect('financas:desp_pessoal_lancamentos', candidato_id)
 
+"""
 #-------------------------------------------------------
 # DESPESAS
 #-------------------------------------------------------
@@ -683,3 +684,5 @@ def despesas_excluir(request, doacao_id):
   return redirect('financas:despesas_lancamentos', candidato_id)
 
 #-------------------------------------------------------
+
+"""
