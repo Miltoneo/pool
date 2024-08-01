@@ -448,6 +448,11 @@ def candidato_incluir(request):
         candidato.val_percent_permitido_autofinanciamento = LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO
         candidato.save()
    
+        # cria doador [candidato] para autofinanciamento 
+        doador = Doador.objects.create(pessoa=candidato.pessoa,\
+                                        candidato= candidato)
+
+
         request.session['msg_status'] = 'candidato incluído com sucesso!'
         return redirect('financas:cadastro_candidato')
       else:

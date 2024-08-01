@@ -76,10 +76,12 @@ urlpatterns = [
     path('doacao_incluir/<int:doador_id>/', views.doacao_incluir, name='doacao_incluir'),
     path('doacao_editar/<int:doacao_id>/', views.doacao_editar, name='doacao_editar'),
     path('doacao_excluir/<int:doacao_id>/', views.doacao_excluir, name='doacao_excluir'),
+    path('verificar_doacoes/', views.verificar_doacoes, name='verificar_doacoes'),
 
   # Menu autofinacimento
     path('autofinancia_main/', views.autofinancia_main, name='autofinancia_main'),
     path('lst_doacoes_doador/<int:doador_id>', views.lst_doacoes_doador, name='lst_doacoes_doador'),    
+    path('verificar_autofinanciamento/', views.verificar_autofinanciamento, name='verificar_autofinanciamento'),
 
     path('autofinancia_lancamentos/<int:candidato_id>/', views.autofinancia_lancamentos, name='autofinancia_lancamentos'),
     path('autofinanciameto_incluir/<int:candidato_id>/', views.autofinanciameto_incluir, name='autofinanciameto_incluir'),

@@ -68,20 +68,26 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 #----------------------------------------------------------
-# receitas
+# UTILIZA COMO ENTRADA PARA PREPARAR AMBIENTE
 #---------------------------------------------------------
 def candidato_receitas(request, candidato_id):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
   request.session['candidato_id'] =   candidato_id
+  request.session['alm_autofinanciamento'] = 'Pendente'
 
-  candidato = Candidato.objects.all
+  candidato= Candidato.objects.get(id=candidato_id)
+  pessoa = Pessoa.objects.get(id=candidato.pessoa.id)
+
+  # RECUPERA DOADOR PARA AUTOFINANCIAMENTO
+  doador = Doador.objects.get(pessoa=pessoa, candidato=candidato)
+  request.session['auto_doador_id'] =   doador.id
 
   template = loader.get_template('financas/receitas/receitas.html')
   context = {
               'ano_fiscal'        : ano_fiscal,
-              'candidato'         : candidato,
+
               'msg'               : msg,
               'user'              : request.user,
             }
@@ -97,9 +103,10 @@ def doacoes_main(request):
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
   candidato_id = request.session['candidato_id']
+  auto_doador_id = request.session['auto_doador_id']
 
   candidato = Candidato.objects.get(id=candidato_id)
-  lst_doadores =  Doador.objects.filter(candidato = candidato)
+  lst_doadores =  Doador.objects.filter(candidato = candidato).exclude(id=auto_doador_id)
 
   template = loader.get_template('financas/doacoes_pessoa_fisica/doacoes_main.html') 
   context = {
@@ -118,7 +125,6 @@ def lst_doacoes_doador(request, doador_id):
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
   candidato_id = request.session['candidato_id']
-
   request.session['doador_id'] = doador_id
 
   candidato = Candidato.objects.get(id=candidato_id)
@@ -154,9 +160,6 @@ def doacao_incluir(request, doador_id):
         doacao.save()
 
         request.session['msg_status'] = 'doador incluído com sucesso!'
-
-        # Totaliza doações e emite condição do doador quanto aos limites
-        request.session['msg_status'] = totaliza_doacoes(doador_id)
 
         return redirect('financas:lst_doacoes_doador', doador_id)
       else:
@@ -196,9 +199,6 @@ def doacao_editar(request, doacao_id):
       form.save()
       request.session['msg_status'] = 'Edição com sucesso!!!'
 
-      # Totaliza doações e emite condição do doador quanto aos limites
-      totaliza_doacoes(doador_id)
-
       return redirect('financas:lst_doacoes_doador', doador_id) 
     else:
       request.session['msg_status'] = 'Falha na edição dos dados'
@@ -225,30 +225,34 @@ def doacao_excluir(request, doacao_id):
   ano_fiscal = request.session['ano_fiscal']
   doador_id = request.session['doador_id']
 
-
   doacao = Doacoes.objects.get(id=doacao_id)
   doacao.delete()
-
-  # Totaliza doações e emite condição do doador quanto aos limites
-  totaliza_doacoes(doador_id)
 
   request.session['msg_status'] = 'exclusão com sucesso!!!'
 
   return redirect('financas:lst_doacoes_doador', doador_id)  
+
+#------------------------------------------------------
+def verificar_doacoes(request):
   
-#----------------------------------------------------------
+  request.session['msg_status'] = chk_doacoes(request)
+
+  return redirect('financas:doacoes_main')
+  
+#-------------------------------------------------------
 # AutoFinanciamento
-#---------------------------------------------------------
+#-------------------------------------------------------
 def autofinancia_main(request):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
   candidadto_id = request.session['candidato_id']
+  situacao =  request.session['alm_autofinanciamento']
 
   candidato = Candidato.objects.get(id=candidadto_id)
-  teto_gasto = Teto_gasto_cargo.objects.get(cidade=candidato.pessoa.cidade, cargo=candidato.cargo).valor
+  pessoa = candidato.pessoa
 
-  situacao = chk_autofinancimanto(candidato)
+  teto_gasto = Teto_gasto_cargo.objects.get(cidade=candidato.pessoa.cidade, cargo=candidato.cargo).valor
 
   template = loader.get_template('financas/autofinancia/autofinancia_main.html') 
   context = {
@@ -262,14 +266,28 @@ def autofinancia_main(request):
   
   return HttpResponse(template.render(context, request))
 
+#---------------------------------------------------------
+def verificar_autofinanciamento(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  candidadto_id = request.session['candidato_id']
+
+  chk_autofinancimanto(request)
+
+  return redirect('financas:autofinancia_main')
+
 #------------------------------------------------------
 def autofinancia_lancamentos(request, candidato_id):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
+  auto_doador_id = request.session['auto_doador_id']
 
   candidato = Candidato.objects.get(id=candidato_id)
-  lst_lancamentos = Doacoes.objects.filter(candidato = candidato).order_by('data').order_by('tipo_doacao')
+  auto_doador = Doador.objects.get(id=auto_doador_id)
+
+  lst_lancamentos = Doacoes.objects.filter(doador = auto_doador ).order_by('data')
 
   template = loader.get_template('financas/autofinancia/autofinancia_lancamentos.html')
   context = {
@@ -286,6 +304,9 @@ def autofinanciameto_incluir(request, candidato_id):
   
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
+  auto_doador_id = request.session['auto_doador_id']
+
+  doador = Doador.objects.get(id=auto_doador_id)
 
   candidato = Candidato.objects.get(id=candidato_id)
   if request.POST: 
@@ -293,24 +314,7 @@ def autofinanciameto_incluir(request, candidato_id):
 
       if form.is_valid():
         doacao = form.save(commit=False)
-        doacao.candidato = candidato
-
-        # totaliza doações
-        if (doacao.tipo_doacao == TIPO_DOACAO_FINANCEIRA):
-            candidato.total_autofin_financeiro += doacao.valor
-
-        elif (doacao.tipo_doacao == TIPO_DOACAO_ESTIMAVEL_BENS):
-            candidato.total_autofin_estimavel_bens += doacao.valor 
-
-        elif (doacao.tipo_doacao == TIPO_DOACAO_ESTIMAVEL_VEICULOS):
-            candidato.total_autofin_estimavel_veiculos += doacao.valor 
-
-        candidato.total_autofin_totalizado = candidato.total_autofin_financeiro +\
-                                              candidato.total_autofin_estimavel_bens + \
-                                              candidato.total_autofin_estimavel_veiculos
-
-        # save
-        candidato.save()
+        doacao.doador = doador
         doacao.save()
 
         request.session['msg_status'] = 'doador incluído com sucesso!'

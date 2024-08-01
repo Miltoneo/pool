@@ -7,10 +7,9 @@
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
-  <h1> Lista de autofinanciamento</h1>
-  <b>  Candidato: {{candidato.candidato.nome}}</b>
-  <p>
-  <b>  Cargo: {{candidato.cargo.nome}}</b>
+  <h1> Lançamentos do autofinanciamento</h1>
+  <h5> Candidato: {{candidato.pessoa.nome}}</h5>
+  <h6> Cargo: {{candidato.cargo.nome}}</h6>
 
 {% endblock %}
 
