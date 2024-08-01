@@ -198,7 +198,7 @@
             <div class="list-group">
               <a href="{% url 'financas:index' %}" class="btn btn-sm btn-primary px-6"> Home</a>
               <a href= {% url 'financas:candidato_receitas' candidato_id=request.session.candidato_id %} class="btn btn-sm btn-primary px-6"> Receitas</a>
-              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Despesas</a>
+              <a href="{% url 'financas:despesas_main' %}" class="btn btn-sm btn-primary px-6"> Despesas</a>
               <a href="{% url 'financas:doacoes_main' %}" class="btn btn-sm btn-primary px-6"> Doações pessoa física   </a>
               <a href="{% url 'financas:autofinancia_main' %}" class="btn btn-sm btn-primary px-6"> AutoFinancidamento   </a>
               <a href="{% url 'financas:pessoal_main' %}" class="btn btn-sm btn-primary px-6"> Despesa de pessoal  </a>

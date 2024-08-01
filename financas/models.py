@@ -38,6 +38,22 @@ class limites(models.Model):
     return f"{self}"
 
 #------------------------------------------------
+class Grupo_despesa(models.Model):
+  
+  codigo =  models.CharField(max_length=20, null=False, unique=True) 
+  descricao = models.CharField(max_length=255, null=False, default="")
+  
+  total_contratado = models.FloatField(null=False, default=0) 
+  total_estimavel = models.FloatField(null=False, default=0) 
+  total_pago_FEFC = models.FloatField(null=False, default=0) 
+  total_pago_fundo_partidario = models.FloatField(null=False, default=0) 
+  total_pago_outros_rec = models.FloatField(null=False, default=0) 
+  total_nao_pago  = models.FloatField(null=False, default=0) 
+
+  def __str__(self):
+    return f"{self.codigo} {self.descricao}"
+  
+#------------------------------------------------
 class Cidade(models.Model):
 
   nome =  models.CharField(max_length=20, null=False, unique=True)
@@ -205,35 +221,7 @@ class Receita(models.Model):
   def __str__(self):
     return f"{self.total}"
 
-#------------------------------------------------
-class Grupo_despesa(models.Model):
-  
-  codigo =  models.CharField(max_length=20, null=False, unique=True) 
-  descricao = models.CharField(max_length=255, null=False, default="")
-  limite = models.FloatField(null=False, default=0)
 
-  def __str__(self):
-    return f"{self.codigo}"
-
-#------------------------------------------------
-class Item_despesa(models.Model):
-  
-  grupo = models.ForeignKey(Grupo_despesa, on_delete = models.CASCADE)
-  codigo =  models.CharField(max_length=20, null=False, unique=True) 
-  descricao = models.CharField(max_length=255, null=False, default="")
-
-  def __str__(self):
-    return f"{self.codigo} {self.descricao}"
-  
-#------------------------------------------------
-class Despesa(models.Model):
-
-  item  = models.ForeignKey(Item_despesa, on_delete = models.CASCADE)
-  valor = models.FloatField(null=False, default=0)
-
-  def __str__(self):
-    return f"{self.item.grupo.codigo} {self.item.descricao}"
-  
 #------------------------------------------------
 class Candidato(models.Model):
 
@@ -241,8 +229,8 @@ class Candidato(models.Model):
   pessoa = models.ForeignKey(Pessoa, on_delete = models.CASCADE, unique=True)
   partido = models.ForeignKey(Partido, on_delete = models.CASCADE, null=True)
   cargo  =  models.ForeignKey(Cargo, on_delete = models.CASCADE,   null=True)
-  receita = models.ForeignKey(Receita, on_delete = models.CASCADE, null=True)
-  despesa = models.ForeignKey(Despesa, on_delete = models.CASCADE, null=True)
+  #receita = models.ForeignKey(Receita, on_delete = models.CASCADE, null=True)
+  #despesa = models.ForeignKey(Despesas, on_delete = models.CASCADE, null=True)
   #
   val_percent_permitido_autofinanciamento = models.FloatField(null=False, default=0) # sobre o teto de gasto para o cargo
   val_permitido_autofinanciamento       = models.FloatField(null=False, default=0)   # val_percent * teto de gasto
@@ -253,8 +241,6 @@ class Candidato(models.Model):
 
   def __str__(self):
     return f"{self.codigo} {self.pessoa.nome}" 
-
-
 
 #------------------------------------------------
 class Doador(models.Model):
@@ -317,7 +303,7 @@ class Pessoa_contratada(models.Model):
   data = models.DateField(null=False)
   nome = models.CharField(max_length=255,  default='-', null=False)
   funcao = models.CharField(max_length=255,  default='-', null=False)
-  item_despesa = models.ForeignKey(Item_despesa, on_delete = models.CASCADE, null=False)
+  grupo_despesa = models.ForeignKey(Grupo_despesa, on_delete = models.CASCADE, null=False)
 
   tipo_contabil=  models.PositiveSmallIntegerField(
                       choices=tipo_t.choices, 
@@ -329,3 +315,21 @@ class Pessoa_contratada(models.Model):
 
   def __str__(self):
     return f"{self.nome}" 
+  
+
+#------------------------------------------------
+class Despesas(models.Model):
+
+  data = models.DateField(null=False, default='2000-01-01')
+  candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, null=False)
+  grupo = models.ForeignKey(Grupo_despesa, on_delete = models.CASCADE)
+  valor_contratado = models.FloatField(null=False, default=0) 
+  valor_estimavel = models.FloatField(null=False, default=0) 
+  valor_pago_FEFC = models.FloatField(null=False, default=0) 
+  valor_pago_fundo_partidario = models.FloatField(null=False, default=0) 
+  valor_pago_outros_rec = models.FloatField(null=False, default=0) 
+  valor_nao_pago  = models.FloatField(null=False, default=0) 
+
+  def __str__(self):
+    return f"{self.candidato}"
+  

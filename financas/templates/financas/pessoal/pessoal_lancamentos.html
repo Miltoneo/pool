@@ -43,7 +43,7 @@
                   <th rowspan="1">Data</th>             
                   <th rowspan="1">Nome</th>
                   <th rowspan="1">Funcao</th>
-                  <th rowspan="1">Item despesa </th> 
+                  <th rowspan="1">Grupo despesa </th> 
                   <th rowspan="1">Valor contratado</th>
                   <th rowspan="1">Valor cessão</th>
                   <th rowspan="1">Valor total </th>   
@@ -56,7 +56,7 @@
                     <td>{{ pessoa_contratada.nome}}</td>  
                     <td>{{ pessoa_contratada.funcao}}</td>  
 
-                    <td>{{ pessoa_contratada.item_despesa}}</td>
+                    <td>{{ pessoa_contratada.grupo_despesa.descricao}}</td>
                     <td>{{ pessoa_contratada.valor_contratado}}</td>  
                     <td>{{ pessoa_contratada.valor_cessao}}</td>
                     <td>{{ pessoa_contratada.valor_contratado|add:pessoa_contratada.valor_cessao }}</td>

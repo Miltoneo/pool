@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.contrib.auth import views as auth_views
 from . import views
-from . import views_cadastro
+from . import views_cadastro, views_despesas
+
 app_name='financas'
 
 urlpatterns = [
@@ -96,6 +97,18 @@ urlpatterns = [
     path('desp_pessoal_incluir/<int:candidato_id>/', views.desp_pessoal_incluir, name='desp_pessoal_incluir'),
     path('desp_pessoal_editar/<int:doacao_id>/', views.desp_pessoal_editar, name='desp_pessoal_editar'),
     path('desp_pessoal_excluir/<int:doacao_id>/', views.desp_pessoal_excluir, name='desp_pessoal_excluir'),
+
+  #---------------------------------------------------------------------------------------
+  # VIEWS.DESPESAS
+  #---------------------------------------------------------------------------------------
+    path('despesas_main/', views_despesas.despesas_main, name='despesas_main'),
+    path('despesas_situacao/', views_despesas.despesas_situacao, name='despesas_situacao'),
+    path('despesas_lancamentos/<int:candidato_id>/', views_despesas.despesas_lancamentos, name='despesas_lancamentos'),
+
+    path('despesas_incluir/<int:candidato_id>/', views_despesas.despesas_incluir, name='despesas_incluir'),
+    path('despesas_editar/<int:despesa_id>/', views_despesas.despesas_editar, name='despesas_editar'),
+    path('despesas_excluir/<int:despesa_id>/', views_despesas.despesas_excluir, name='despesas_excluir'),
+    path('despesa_atualiza_resumo/', views_despesas.despesa_atualiza_resumo, name='despesa_atualiza_resumo'),
 
 ]
  

@@ -87,6 +87,7 @@ def candidato_receitas(request, candidato_id):
 
   # VERIFICA DESPESA DE PESSOAL
   despesa_pessoal = Despesa_pessoal.objects.get_or_create(candidato=candidato)
+  #despesas = Despesas.objects.get_or_create(candidato=candidato)
 
   template = loader.get_template('financas/receitas/receitas.html')
   context = {
@@ -510,7 +511,7 @@ def desp_pessoal_editar(request, doacao_id):
   else:
 
     form = Doacao_Form(instance = doacao)
-    template = loader.get_template('financas/autofinancia/autofinancia_editar_incluir.html')
+    template = loader.get_template('financas/pessoal/pessoal_editar_incluir.html')
     context = {
                 'ano_fiscal'  : ano_fiscal,
                 'candidato'     : candidato,
@@ -535,5 +536,150 @@ def desp_pessoal_excluir(request, doacao_id):
   request.session['msg_status'] = 'exclusão com sucesso!!!'
 
   return redirect('financas:desp_pessoal_lancamentos', candidato_id)
+
+#-------------------------------------------------------
+# DESPESAS
+#-------------------------------------------------------
+def despesas_main(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']
+  situacao =  request.session['alm_desp_pessoal']
+
+  candidato = Candidato.objects.get(id=candidato_id)
+
+  despesas = Despesa.objects.get(candidato = candidato_id)
+
+  template = loader.get_template('financas/despesas/despesas_main.html') 
+  context = {
+              'ano_fiscal'        : ano_fiscal,
+              'candidato'         : candidato,
+              'desp_pessoal'      : desp_pessoal,
+              'situacao'          : situacao,
+              'msg'               : msg,
+              'user'              : request.user,
+            }
+  
+  return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def despesas_situacao(request):
+  
+  request.session['msg_status'] = chk_despesa_pessoal(request)
+
+  return redirect('financas:pessoal_main')
+
+#------------------------------------------------------
+def despesas_lancamentos(request, candidato_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  auto_doador_id = request.session['auto_doador_id']
+
+  candidato = Candidato.objects.get(id=candidato_id)
+  despesas = Despesa.objects.get(candidato=candidato)
+
+  lst_pessoas_contratada = Pessoa_contratada.objects.filter(despesa_pessoal = desp_pessoal ).order_by('data')
+
+  template = loader.get_template('financas/despesas/despesas_lancamentos.html')
+  context = {
+                'ano_fiscal' : ano_fiscal,
+                'candidato'  : candidato,
+                'lst_pessoas_contratada' : lst_pessoas_contratada,
+                'msg'        : msg,
+                'user'       : request.user,
+              }
+  return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def despesas_incluir(request, candidato_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  auto_doador_id = request.session['auto_doador_id']
+
+  candidato = Candidato.objects.get(id=candidato_id)
+  despesas = Despesa.objects.get(candidato=candidato)
+
+  #pessoa_contatrada = Pessoa_contratada.objects.get(despesa_pessoal=desp_pessoal)
+
+  if request.POST: 
+      form = Pessoa_contrato_Form(request.POST)    
+
+      if form.is_valid():
+        pessoa_contatrada = form.save(commit=False)
+        pessoa_contatrada.despesa_pessoal= desp_pessoal
+        pessoa_contatrada.save()
+
+        request.session['msg_status'] = 'doador incluído com sucesso!'
+        return redirect('financas:despesas_lancamentos', candidato_id)
+      else:
+        request.session['msg_status'] = 'Falha inclusão !'
+        return redirect('financas:despesas_lancamentos', candidato_id)
+
+  else:
+    
+    template = loader.get_template('financas/despesas/despesas_editar_incluir.html')
+    form = Pessoa_contrato_Form( )  
+
+    context = {
+                'ano_fiscal' : ano_fiscal,
+                'candidato'  : candidato,
+                'form'       : form,
+                'msg'        : msg,
+                'user'       : request.user,
+              }
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def despesas_editar(request, doacao_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+  candidato_id = request.session['candidato_id']  
+
+  candidato = Candidato.objects.get(id=candidato_id)
+  doacao = Doacoes.objects.get(id=doacao_id)
+  if request.method == 'POST':
+
+    form = Doacao_Form(request.POST, instance = doacao)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:despesas_lancamentos', candidato_id)
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:despesas_lancamentos', candidato_id)
+    
+  else:
+
+    form = Doacao_Form(instance = doacao)
+    template = loader.get_template('financas/autofinancia/autofinancia_editar_incluir.html')
+    context = {
+                'ano_fiscal'  : ano_fiscal,
+                'candidato'     : candidato,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+
+#------------------------------------------------------
+def despesas_excluir(request, doacao_id):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  candidato_id = request.session['candidato_id']  
+  candidato = Candidato.objects.get(id=candidato_id)
+
+  doacao = Doacoes.objects.get(id=doacao_id)
+  doacao.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:despesas_lancamentos', candidato_id)
 
 #-------------------------------------------------------

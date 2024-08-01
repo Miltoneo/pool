@@ -64,13 +64,6 @@ class Gpo_despesas_Form(ModelForm):
         exclude = ('receita', 'despesa')    
 
 #-----------------------------------------
-class Item_despesa_Form(ModelForm):
-    class Meta:
-        model = Item_despesa
-        fields =  "__all__"    
-        exclude = ('receita', 'despesa')    
-
-#-----------------------------------------
 class Doador_Form(ModelForm):
     class Meta:
         model = Doador
@@ -100,3 +93,14 @@ class Pessoa_contrato_Form(ModelForm):
                     'data': widgets.DateInput(attrs={'type': 'date'}),
                     }
         exclude = ('despesa_pessoal', 'valor_total')    
+
+
+#-----------------------------------------
+class Despesa_Form(ModelForm):
+    class Meta:
+        model = Despesas
+        fields =  "__all__"   
+        widgets = {
+                    'data': widgets.DateInput(attrs={'type': 'date'}),
+                    }
+        exclude = ('candidato',)    
