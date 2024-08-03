@@ -4,6 +4,8 @@ from django.forms import ModelForm, ChoiceField,  DateField, widgets
 from django.forms.widgets import HiddenInput
 from .models import *
 from django.conf import settings
+
+from django_select2 import forms as s2forms
 from django_select2.forms import Select2MultipleWidget, Select2Widget
 
 #-----------------------------------------
@@ -107,14 +109,14 @@ class Despesa_Form(ModelForm):
 
 
 #--------------------------------------------------------
-"""
-class MyWidget(s2forms.Select2Widget):
-    model= Despesa_Item,
+
+class MyGrupoWidget(s2forms.Select2Widget):
+    model= Despesas,
     search_fields = [
         'grupo__icontains',
-        'descricao__icontains',
     ]
 
+"""
     def __init__(self, *args, **kwargs):
         # first call parent's constructor
         super(Despesa_Form, self).__init__(*args, **kwargs)
@@ -129,6 +131,6 @@ class Despesa_Form(ModelForm):
         fields =  ('data','grupo','valor_contratado','valor_estimavel',)  
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
-                    #'item': MyWidget,
+                    'grupo': MyGrupoWidget,
                     }
         #exclude = ('codigo','descricao','valor_pago_FEFC','valor_pago_fundo_partidario','valor_pago_outros_rec', 'valor_nao_pago',)    
