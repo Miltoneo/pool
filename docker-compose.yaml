@@ -1,5 +1,7 @@
 version: '3'
 services:
+  redis:
+    image: "redis:alpine"
   db:
     image: mysql:8
     container_name: mysq_1
@@ -22,13 +24,14 @@ services:
   web:
     build: .
     container_name: pool_c
-    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    command: sh -c " python manage.py migrate && python manage.py runserver 0.0.0.0:8000"  # python manage.py migrate && 
     restart: always
     environment:
       SECONDARY_SERVER_HOSTNAME   : localhost
       SECONDARY_DATABASE_NAME     : prd_data
       SECONDARY_DATABASE_USER     : admin
       SECONDARY_DATABASE_PASSWORD : admin
+      REDIS_HOST: redis
     volumes:
       - .:/app
       - /tmp/app/mysqld:/run/mysqld

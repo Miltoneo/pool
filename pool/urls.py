@@ -8,4 +8,5 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('financas/', include('financas.urls', namespace='financas' )), 
     path('admin/', admin.site.urls),
+    path("select2/", include("django_select2.urls")),
 ]

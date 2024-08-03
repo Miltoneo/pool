@@ -28,8 +28,7 @@ SECRET_KEY = 'django-insecure-$@_bm0o@#@+%($@_2s=y6s!2$jv3$*cqmrxymij1xjojce7q&&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.onkoto.com.br', 'onkoto.com.br','[::1]', '*'] 
 
 # Application definition
 
@@ -43,10 +42,12 @@ INSTALLED_APPS = [
     'financas',
     'bootstrap5',
     'mathfilters',
-    'ckeditor',
+    #'ckeditor',
     'django_adsense_injector',
     'django.contrib.sitemaps',
     'django_extensions', 
+    'django_select2',  # 
+    'jquery', #
 
 ]
 
@@ -129,13 +130,20 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
+# If you set this to False, Django will not format dates, numbers and
+# calendars according to the current locale.
+USE_L10N = True
+DATE_INPUT_FORMATS = (
+                           '%d/%m/%Y',              # '31/12/24'      
+                           '%d/%m/%y',              # '10/25/06'                     
+                             )
+
+DECIMAL_SEPARATOR = u','
+THOUSAND_SEPARATOR = u'.'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -146,3 +154,39 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# authentication purposes
+#LOGIN_URL = '/login/'
+#LOGIN_REDIRECT_URL = '/main/'
+#LOGOUT_REDIRECT_URL = '/login/'
+
+# modo HTTPS
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# caching with redis
+# os.environ leitura do ambiente docker .yaml
+REDIS_HOST = os.environ.get('REDIS_HOST', 'redis')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{}:{}/1".format(REDIS_HOST, REDIS_PORT),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "select2": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{}:{}/2".format(REDIS_HOST, REDIS_PORT),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# Tell select2 which cache configuration to use:
+SELECT2_CACHE_BACKEND = "select2"

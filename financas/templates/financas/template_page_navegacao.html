@@ -1,18 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="bBW6t7so6dAw0kHfRhkAxcaQzosrQinyXFYoojcOWeg" />
-    
- {% load bootstrap5 %}
+
+    <!-- SELECT2 -->
+    <script type="text/javascript" src="{% static 'jquery-3.7.1.min.js' %}"></script> 
+    {{ form.media.css }} 
+
+    {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     {% load i18n %}
     {% load adsense_tags %}
     {% load static %}
 
-<!-- SECTION: SCRIPTS -->
+  <!-- SECTION: SCRIPTS -->
     {% block bl_script %} 
     {% endblock %}
     
@@ -212,12 +217,12 @@
     <div>
     {% block content %} 
 
-
     {% endblock %}
     </div> 
     <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">©  {% now 'Y'  %}  copyright cabatatu</div>
 
-    <!-- anuncio -->
+    <!-- for select2 -->
+    {{ form.media.js }}
 
   </body>
 </html>
