@@ -57,11 +57,11 @@ class Candidato_Form(ModelForm):
         exclude = ('receita', 'despesa')    
 
 #-----------------------------------------
-class Gpo_despesas_Form(ModelForm):
+class Grupo_despesa_Form(ModelForm):
     class Meta:
         model = Grupo_despesa
-        fields =  "__all__"    
-        exclude = ('receita', 'despesa')    
+        fields =  ('codigo', 'descricao')   
+        #exclude = ('receita', 'despesa')    
 
 #-----------------------------------------
 class Doador_Form(ModelForm):
@@ -123,12 +123,12 @@ class MyWidget(s2forms.Select2Widget):
 
 """
 
-class Grupo_despesa_Form(ModelForm):
+class Despesa_Form(ModelForm):
     class Meta:
-        model = Grupo_despesa
-        fields =  "__all__"   
+        model = Despesas
+        fields =  ('data','grupo','valor_contratado','valor_estimavel',)  
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
                     #'item': MyWidget,
                     }
-        exclude = ('codigo','descricao','total_contratado','total_estimavel', 'total_nao_pago',)    
+        #exclude = ('codigo','descricao','valor_pago_FEFC','valor_pago_fundo_partidario','valor_pago_outros_rec', 'valor_nao_pago',)    

@@ -7,7 +7,8 @@
     <meta name="google-site-verification" content="bBW6t7so6dAw0kHfRhkAxcaQzosrQinyXFYoojcOWeg" />
     
     <!-- SELECT2 -->
-    <script type="text/javascript" src="{% static 'jquery-3.7.1.min.js' %}"></script> 
+    <!--  <script type="text/javascript" src="{% static 'jquery-3.7.1.min.js' %}"></script>  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     {{ form.media.css }} 
 
     {% load bootstrap5 %}
@@ -184,7 +185,7 @@
           <td>
             <div class="list-group">
               <a href="{% url 'financas:index' %}" class="btn btn-sm btn-primary px-6"> Home</a>
-              <a href="{% url 'financas:cadastro_main' %}" class="btn btn-sm btn-primary px-6"> Gestão de cadastro</a>
+              <a href="{% url 'financas:cadastro_partido' %}" class="btn btn-sm btn-primary px-6"> Gestão de cadastro</a>
             </div>
           </td>
         </tr>

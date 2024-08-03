@@ -40,8 +40,9 @@
               <table>
                 <tr>
                   <th rowspan="1">id</th>  
-                  <th rowspan="1">Data</th>              
-                  <th rowspan="1">Grupo despesa</th>             
+                  <th rowspan="1">Data</th>  
+                  <th rowspan="1">Código Grupo despesas</th>                        
+                  <th rowspan="1">Descrição Grupo despesas</th>             
                   <th rowspan="1">Valor contratado</th>
                   <th rowspan="1">Valor Estimavel</th>
                   <th rowspan="1">[FEFC] Valor Pago  </th>   
@@ -54,6 +55,7 @@
                   <tr>
                     <td><a href= "{% url 'financas:despesas_excluir' despesa_id=despesa.id %}"  onclick="return (confirm('Confirma a exclusão?'))" > Excluir </a>|<a  href= "{% url 'financas:despesas_editar' despesa_id=despesa.id %}"> Editar </a>{{ forloop.counter }}</td>
                     <td>{{ despesa.data}}</td>
+                    <td>{{ despesa.grupo.codigo}}</td>  
                     <td>{{ despesa.grupo.descricao}}</td>  
                     <td>{{ despesa.valor_contratado}}</td>  
                     <td>{{ despesa.valor_estimavel}}</td>

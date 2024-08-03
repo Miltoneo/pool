@@ -23,7 +23,7 @@ def despesas_main(request):
   situacao =  request.session['alm_desp_pessoal']
 
   candidato = Candidato.objects.get(id=candidato_id)
-  lst_grupo_despesas = Grupo_despesa.objects.all()
+  lst_grupo_despesas = Grupo_despesa.objects.all().order_by('codigo','descricao')
 
   template = loader.get_template('financas/despesas/despesas_main.html') 
   context = {
@@ -51,7 +51,7 @@ def despesas_lancamentos(request, candidato_id):
   ano_fiscal = request.session['ano_fiscal']
 
   candidato = Candidato.objects.get(id=candidato_id)
-  lst_despesas = Despesas.objects.filter(candidato=candidato)
+  lst_despesas = Despesas.objects.filter(candidato=candidato).order_by('data','grupo__codigo','grupo__descricao')
 
   template = loader.get_template('financas/despesas/despesas_lancamentos.html')
   context = {

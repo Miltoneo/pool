@@ -203,11 +203,14 @@
           <td>
             <div class="list-group">
               <a href="{% url 'financas:index' %}" class="btn btn-sm btn-primary px-6"> Home</a>
-              <a href= {% url 'financas:candidato_receitas' candidato_id=request.session.candidato_id %} class="btn btn-sm btn-primary px-6"> Receitas</a>
-              <a href="{% url 'financas:despesas_main' %}" class="btn btn-sm btn-primary px-6"> Despesas</a>
-              <a href="{% url 'financas:doacoes_main' %}" class="btn btn-sm btn-primary px-6"> Doações pessoa física   </a>
-              <a href="{% url 'financas:autofinancia_main' %}" class="btn btn-sm btn-primary px-6"> AutoFinancidamento   </a>
-              <a href="{% url 'financas:pessoal_main' %}" class="btn btn-sm btn-primary px-6"> Despesa de pessoal  </a>
+              <a href="{% url 'financas:cadastro_partido' %}" class="btn btn-sm btn-primary px-6"> Partido   </a>
+              <a href= {% url 'financas:cadastro_cidade' %} class="btn btn-sm btn-primary px-6"> Cidade</a>
+              <a href="{% url 'financas:cadastro_pessoa' %}" class="btn btn-sm btn-primary px-6"> Pessoa</a>
+              <a href="{% url 'financas:cadastro_cargo' %}" class="btn btn-sm btn-primary px-6"> Cargo   </a>
+              <a href="{% url 'financas:teto_gatos_main' %}" class="btn btn-sm btn-primary px-6"> Teto de gastos  </a>
+              <a href="{% url 'financas:cadastro_candidato' %}" class="btn btn-sm btn-primary px-6"> CANDIDATO  </a>       
+              <a href="{% url 'financas:cadastro_grupo_despesas' %}" class="btn btn-sm btn-primary px-6"> Grupo de Despesas  </a>
+
             </div>
           </td>
         </tr>

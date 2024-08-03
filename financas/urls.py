@@ -42,16 +42,16 @@ urlpatterns = [
     path('candidato_excluir/<int:candidato_id>/', views_cadastro.candidato_excluir, name='candidato_excluir'),
 
   # cadastro grupo despesas
-    path('cadastro_gpo_despesas/', views_cadastro.cadastro_gpo_despesas, name='cadastro_gpo_despesas'),
-    path('gpo_despesas_incluir/', views_cadastro.gpo_despesas_incluir, name='gpo_despesas_incluir'),
-    path('gpo_despesas_editar/<int:gpo_despesas_id>/', views_cadastro.gpo_despesas_editar, name='gpo_despesas_editar'),
-    path('gpo_despesas_excluir/<int:gpo_despesas_id>/', views_cadastro.gpo_despesas_excluir, name='gpo_despesas_excluir'),
+    path('cadastro_grupo_despesas/', views_cadastro.cadastro_grupo_despesas, name='cadastro_grupo_despesas'),
+    path('grupo_despesas_incluir/', views_cadastro.grupo_despesas_incluir, name='grupo_despesas_incluir'),
+    path('grupo_despesas_editar/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_editar, name='grupo_despesas_editar'),
+    path('grupo_despesas_excluir/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_excluir, name='grupo_despesas_excluir'),
 
   # cadastro item despesas
-    path('cadastro_item_despesa/', views_cadastro.cadastro_item_despesa, name='cadastro_item_despesa'),
-    path('item_despesa_incluir/', views_cadastro.item_despesa_incluir, name='item_despesa_incluir'),
-    path('item_despesa_editar/<int:item_despesa_id>/', views_cadastro.item_despesa_editar, name='item_despesa_editar'),
-    path('item_despesa_excluir/<int:item_despesa_id>/', views_cadastro.item_despesa_excluir, name='item_despesa_excluir'),
+    #path('cadastro_grupo_despesas/', views_cadastro.cadastro_grupo_despesas, name='cadastro_grupo_despesas'),
+    #path('grupo_despesas_incluir/', views_cadastro.grupo_despesas_incluir, name='grupo_despesas_incluir'),
+    #path('grupo_despesas_editar/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_editar, name='grupo_despesas_editar'),
+    #path('grupo_despesas_excluir/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_excluir, name='grupo_despesas_excluir'),
 
   # cadastro doador
     path('doador_incluir/', views_cadastro.doador_incluir, name='doador_incluir'),
