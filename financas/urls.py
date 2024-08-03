@@ -47,12 +47,6 @@ urlpatterns = [
     path('grupo_despesas_editar/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_editar, name='grupo_despesas_editar'),
     path('grupo_despesas_excluir/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_excluir, name='grupo_despesas_excluir'),
 
-  # cadastro item despesas
-    #path('cadastro_grupo_despesas/', views_cadastro.cadastro_grupo_despesas, name='cadastro_grupo_despesas'),
-    #path('grupo_despesas_incluir/', views_cadastro.grupo_despesas_incluir, name='grupo_despesas_incluir'),
-    #path('grupo_despesas_editar/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_editar, name='grupo_despesas_editar'),
-    #path('grupo_despesas_excluir/<int:grupo_despesas_id>/', views_cadastro.grupo_despesas_excluir, name='grupo_despesas_excluir'),
-
   # cadastro doador
     path('doador_incluir/', views_cadastro.doador_incluir, name='doador_incluir'),
     path('doador_editar/<int:doador_id>/', views_cadastro.doador_editar, name='doador_editar'),

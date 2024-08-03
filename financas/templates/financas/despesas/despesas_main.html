@@ -39,6 +39,7 @@
               
               <table>
                 <tr>
+                  <th rowspan="1">Pagar</th>  
                   <th rowspan="1">id</th>
                   <th rowspan="1">Código despesa</th>                     
                   <th rowspan="1">Descrição despesa</th>             
@@ -54,8 +55,9 @@
         
                 {% for grupo_despesa in lst_grupo_despesas %}
                   <tr>
-                    <td><a href= "{% url 'financas:grupo_despesa_editar' grupo_id=grupo_despesa.id %}"> Editar </a>{{ forloop.counter }}</td>
-                  <td>{{ grupo_despesa.codigo}}</td>                  
+                    <td><a href= "{% url 'financas:grupo_despesa_editar' grupo_id=grupo_despesa.id %}"> Pagar </td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ grupo_despesa.codigo}}</td>                  
                     <td>{{ grupo_despesa.descricao}}</td>  
                     <td>{{ grupo_despesa.total_contratado}}</td>  
                     <td>{{ grupo_despesa.total_estimavel}}</td>

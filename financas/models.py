@@ -17,8 +17,8 @@ LIMITE_PERCENTUAL_DOACAO_SOBRE_RENDIMENTO_IRPF2024    = 10        #%
 LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO                  = 10        #%
 LIMITE_RENDIMENTO_ISENTO                              =  30639.00
 LIMITE_DOACAO_ESTIMAVEL                               =  40000.00
-LIMITE_PERCENT_ALIMENTACAO                                    = 10        #% = 10% *(total_contratado - (D2.1) - (D2.4) - (D2.43) - (fiscais??))
-LIMITE_PERCENT_LOC_VEICULOS                                   = 20        #% = 20% *(total_contratodo)
+LIMITE_PERCENT_ALIMENTACAO                            = 10        #% = 10% *(total_contratado - (D2.1) - (D2.4) - (D2.43) - (fiscais??))
+LIMITE_PERCENT_LOC_VEICULOS                           = 20        #% = 20% *(total_contratodo)
 
 #limite pessoal
 LIMITE_PESSOAL_VEREADOR =  225
@@ -38,6 +38,7 @@ GRUPO_CONTRATACAO_PESSOAL = 'D2.1'
 GRUPO_ALIMENTACAO = 'D2.16'
 GRUPO_CONTRATACAO_S_ADVOCATICIOS = 'D2.42'
 GRUPO_CONTRATACAO_S_CONTABEIS = 'D2.43'
+GRUPO_LOC_VEICULOS = 'D2.33'
 #------------------------------------------------
 class limites(models.Model):
   

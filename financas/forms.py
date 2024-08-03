@@ -66,6 +66,13 @@ class Grupo_despesa_Form(ModelForm):
         #exclude = ('receita', 'despesa')    
 
 #-----------------------------------------
+class Grupo_despesa_pagar_Form(ModelForm):
+    class Meta:
+        model = Grupo_despesa
+        fields =  ('total_pago_FEFC', 'total_pago_fundo_partidario', 'total_pago_outros_rec')   
+
+
+#-----------------------------------------
 class Doador_Form(ModelForm):
     class Meta:
         model = Doador

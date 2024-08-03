@@ -165,20 +165,20 @@ def grupo_despesa_editar(request, grupo_id):
 
   grupo_despesa = Grupo_despesa.objects.get(id=grupo_id)
   if request.POST: 
-      form = Grupo_despesa_Form(request.POST, instance=grupo_despesa)    
+      form = Grupo_despesa_pagar_Form(request.POST, instance=grupo_despesa)    
       if form.is_valid():
         form.save()
 
         request.session['msg_status'] = 'doador incluído com sucesso!'
-        return redirect('financas:despesas_lancamentos', candidato_id)
+        return redirect('financas:despesas_main')
       else:
         request.session['msg_status'] = 'Falha inclusão !'
-        return redirect('financas:despesas_lancamentos', candidato_id)
+        return redirect('financas:despesas_main')
 
   else:
     
     template = loader.get_template('financas/despesas/grupo_despesa_editar.html')
-    form = Grupo_despesa_Form(instance=grupo_despesa)  
+    form = Grupo_despesa_pagar_Form(instance=grupo_despesa)  
 
     context = {
                 'ano_fiscal' : ano_fiscal,

@@ -45,10 +45,10 @@
                   <th rowspan="1">Descrição Grupo despesas</th>             
                   <th rowspan="1">Valor contratado</th>
                   <th rowspan="1">Valor Estimavel</th>
-                  <th rowspan="1">[FEFC] Valor Pago  </th>   
+                  <!--<th rowspan="1">[FEFC] Valor Pago  </th>   
                   <th rowspan="1">[FUNDO PARTIDÁRIO] Valor Pago  </th> 
                   <th rowspan="1">[OUTROS RECURSOS] Valor Pago   </th>       
-                  <th rowspan="1"> Valor NAO Pago   </th> 
+                  <th rowspan="1"> Valor NAO Pago   </th> -->
                 </tr>
         
                 {% for despesa in lst_despesas %}
@@ -60,10 +60,10 @@
                     <td>{{ despesa.valor_contratado}}</td>  
                     <td>{{ despesa.valor_estimavel}}</td>
 
-                    <td>{{ despesa.valor_pago_FEFC}}</td>  
+                    <!--<td>{{ despesa.valor_pago_FEFC}}</td>  
                     <td>{{ despesa.valor_pago_fundo_partidario}}</td>
                     <td>{{ despesa.valor_pago_outros_rec }}</td>
-                    <td>{{ despesa.valor_nao_pago }}</td>
+                    <td>{{ despesa.valor_nao_pago }}</td> -->
 
                   </tr>
                 {% endfor %}

@@ -1,14 +1,13 @@
 {% extends "financas/template_page_navegacao.html" %}
 
 {% block title %}
-  Autofinancimento inclusão/edição
+  Grupo de Despesa: Registrar pagamentos
 {% endblock %}
 
 {% block titulo %}
   <div> <a class="msg"> msg: {{ msg }}</a> </div>
   <b>  Eleições: {{ano_fiscal}}</b>
   <h2> Grupo de despesa:</h2>
-  <h1>  {{grupo_despesa.descricao}} </h1>
   <h6> Candidato: {{candidato.pessoa.nome}}</h6>
   <h6> Cargo: {{candidato.cargo.nome}}</h6>
 

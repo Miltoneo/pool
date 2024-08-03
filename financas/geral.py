@@ -230,23 +230,26 @@ def totaliza_grupo_despesas (request):
         for sum_despesa in ds_sum_despesas:
             grupo = sum_despesa.get('grupo')
             grupo = Grupo_despesa.objects.get(id=grupo)
+
             grupo.total_contratado = sum_despesa.get('total_contratado')
             grupo.total_estimavel = sum_despesa.get('total_estimavel')
 
             #grupo.total_pago_FEFC = sum_despesa.get('total_pago_FEFC')
             #grupo.total_pago_fundo_partidario = sum_despesa.get('total_pago_fundo_partidario')
             #grupo.total_pago_outros_rec = sum_despesa.get('total_pago_outros_rec')
-            grupo.total_nao_pago = (grupo.total_contratado + grupo.total_estimavel) - (grupo.total_pago_FEFC  \
+
+            #grupo.total_nao_pago = (grupo.total_contratado + grupo.total_estimavel) - (grupo.total_pago_FEFC  \
+            grupo.total_nao_pago = (grupo.total_contratado ) - (grupo.total_pago_FEFC  \
                                                                                     + grupo.total_pago_fundo_partidario \
                                                                                     + grupo.total_pago_outros_rec)
             grupo.save()
             # finalizou a totalização por grupos
 
             # aplica regra alimentação
-            regra_alimentação()
+            regra_val_limite_alimentação()
 
-
-
+            # aplica regra locação de veiculos
+            regra_val_limite_loc_veiculos()
 
     except Exception as error:
          mensagem = 'Falha totalização de grupo de despesas -> ' + str(error) 
@@ -254,9 +257,9 @@ def totaliza_grupo_despesas (request):
     return mensagem
 
 #----------------------------------
-# REGRA ALIMENTACAO 
+# REGRA VALOR LIMITE ALIMENTACAO 
 #----------------------------------
-def regra_alimentação():
+def regra_val_limite_alimentação():
     
     # calcula total despesas
     ds_desp_total_contratada = Grupo_despesa.objects.aggregate(total =Sum('total_contratado'))
@@ -276,5 +279,20 @@ def regra_alimentação():
     ds_grupo_alimentacao.limite_gastos = val_limite_alimentacao
     ds_grupo_alimentacao.save()
 
+#----------------------------------
+# REGRA VALOR LIMITE LOCACAO VEICULOS 
+#----------------------------------
+def regra_val_limite_loc_veiculos():
+    
+    # calcula total despesas
+    ds_desp_total_contratada = Grupo_despesa.objects.aggregate(total =Sum('total_contratado'))
+    val_total_contratado = ds_desp_total_contratada.get('total')
+
+    # regra
+    val_limite_loc_veiculos = (LIMITE_PERCENT_LOC_VEICULOS/ 100) * ( val_total_contratado)
+
+    ds_grupo_loc_veiculos = Grupo_despesa.objects.get(codigo = GRUPO_LOC_VEICULOS)
+    ds_grupo_loc_veiculos.limite_gastos = val_limite_loc_veiculos
+    ds_grupo_loc_veiculos.save()
     
     
