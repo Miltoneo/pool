@@ -619,7 +619,7 @@ def cadastro_grupo_despesas(request):
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
 
-  lst_grupo_despesas = Grupo_despesa.objects.all().order_by('codigo','descricao').order_by('codigo','descricao') 
+  lst_grupo_despesas = Grupo_despesa.objects.all().order_by('codigo','descricao')
 
   template = loader.get_template('financas/cadastro/grupo_despesas/grupo_despesas.html')
   context = {

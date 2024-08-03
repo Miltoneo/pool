@@ -211,11 +211,11 @@ def totaliza_grupo_despesas (request):
     
     mensagem = 'Sucesso na totalização de grupo de despesas !'
 
-    candidadto_id = request.session['candidato_id']
-    candidato = Candidato.objects.get(id=candidadto_id)
+    candidato_id = request.session['candidato_id']
+    candidato = Candidato.objects.get(id=candidato_id)
     
     try:
-        #        
+        # calcula total despesas por grupo   
         ds_sum_despesas = Despesas.objects.filter(candidato = candidato)\
                                                 .values('grupo')\
                                                 .order_by('grupo')\
@@ -240,8 +240,36 @@ def totaliza_grupo_despesas (request):
                                                                                     + grupo.total_pago_fundo_partidario \
                                                                                     + grupo.total_pago_outros_rec)
             grupo.save()
+            # finalizou a totalização por grupos
+
+
+        #----------------------------------
+        # REGRA ALIMENTACAO  ItemPrice.objects.aggregate(Sum('price'))
+        #----------------------------------
+
+        # calcula total despesas por candidato
+        ds_desp_total_contratada = Grupo_despesa.objects.aggregate(total =Sum('total_contratado'))
+        val_total_contratado = ds_desp_total_contratada.get('total')
+
+        # Total contatratacao de pessoal
+        val_total_D2_1  = Grupo_despesa.objects.get(codigo = GRUPO_CONTRATACAO_PESSOAL).total_contratado
+        # total contatratacao de serviços advocaticios
+        val_total_D2_42 = Grupo_despesa.objects.get(codigo = GRUPO_CONTRATACAO_S_ADVOCATICIOS).total_contratado
+        # total contatratacao de serviços contabeis
+        val_total_D2_43 = Grupo_despesa.objects.get(codigo = GRUPO_CONTRATACAO_S_CONTABEIS).total_contratado
+
+        val_limite_alimentacao = (LIMITE_PERCENT_ALIMENTACAO/100) * ( val_total_contratado - val_total_D2_1 - val_total_D2_42 - val_total_D2_43)
+
+        ds_grupo_alimentacao = Grupo_despesa.objects.get(codigo = GRUPO_ALIMENTACAO)
+        ds_grupo_alimentacao.limite_gastos = val_limite_alimentacao
+        ds_grupo_alimentacao.save()
+
 
     except Exception as error:
-         mensagem = 'Falha totalização de grupo de despesas -> ' + error 
+         mensagem = 'Falha totalização de grupo de despesas -> ' + str(error) 
 
     return mensagem
+
+
+    
+    

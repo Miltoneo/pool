@@ -44,10 +44,12 @@
                   <th rowspan="1">Descrição despesa</th>             
                   <th rowspan="1">Total  Contratado</th>
                   <th rowspan="1">Total  Estimavel</th>
+                  <th rowspan="1">LIMITE DE GASTOS ATUALIZADO </th>       
                   <th rowspan="1">[FEFC] Total  Pago  </th>   
                   <th rowspan="1">[FUNDO PARTIDÁRIO] Total Pago  </th> 
                   <th rowspan="1">[OUTROS RECURSOS] Total Pago   </th>       
                   <th rowspan="1"> Total NAO Pago   </th> 
+            
                 </tr>
         
                 {% for grupo_despesa in lst_grupo_despesas %}
@@ -55,9 +57,11 @@
                     <td><a href= "{% url 'financas:grupo_despesa_editar' grupo_id=grupo_despesa.id %}"> Editar </a>{{ forloop.counter }}</td>
                   <td>{{ grupo_despesa.codigo}}</td>                  
                     <td>{{ grupo_despesa.descricao}}</td>  
-
                     <td>{{ grupo_despesa.total_contratado}}</td>  
                     <td>{{ grupo_despesa.total_estimavel}}</td>
+
+                    <td>{{ grupo_despesa.limite_gastos}}</td>  
+
                     <td>{{ grupo_despesa.total_pago_FEFC}}</td>  
                     <td>{{ grupo_despesa.total_pago_fundo_partidario}}</td>
                     <td>{{ grupo_despesa.total_pago_outros_rec }}</td>                    

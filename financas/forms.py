@@ -86,17 +86,26 @@ class Teto_gastos_Form(ModelForm):
         model = Teto_gasto_cargo
         fields =  "__all__"   
 
-#-----------------------------------------
+#--------------------------------------------------------
+#--------------------------------------------------------
+class MyGrupoDespesaWidget(s2forms.Select2Widget):
+    model= Despesas,
+    search_fields = [
+        'grupo__icontains',
+    ]
+#--------------------------------------------------------
+#--------------------------------------------------------
 class Pessoa_contrato_Form(ModelForm):
     class Meta:
         model = Pessoa_contratada
         fields =  "__all__"   
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
+                    'grupo': MyGrupoDespesaWidget,
                     }
         exclude = ('despesa_pessoal', 'valor_total')    
 
-
+"""
 #-----------------------------------------
 class Despesa_Form(ModelForm):
     class Meta:
@@ -107,14 +116,8 @@ class Despesa_Form(ModelForm):
                     }
         exclude = ('candidato',)    
 
+"""
 
-#--------------------------------------------------------
-
-class MyGrupoWidget(s2forms.Select2Widget):
-    model= Despesas,
-    search_fields = [
-        'grupo__icontains',
-    ]
 
 """
     def __init__(self, *args, **kwargs):
@@ -131,6 +134,6 @@ class Despesa_Form(ModelForm):
         fields =  ('data','grupo','valor_contratado','valor_estimavel',)  
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
-                    'grupo': MyGrupoWidget,
+                    'grupo': MyGrupoDespesaWidget,
                     }
         #exclude = ('codigo','descricao','valor_pago_FEFC','valor_pago_fundo_partidario','valor_pago_outros_rec', 'valor_nao_pago',)    

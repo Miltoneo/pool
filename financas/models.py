@@ -17,10 +17,12 @@ LIMITE_PERCENTUAL_DOACAO_SOBRE_RENDIMENTO_IRPF2024    = 10        #%
 LIMITE_PERCENTUAL_AUTO_FINANCIAMENTO                  = 10        #%
 LIMITE_RENDIMENTO_ISENTO                              =  30639.00
 LIMITE_DOACAO_ESTIMAVEL                               =  40000.00
+LIMITE_PERCENT_ALIMENTACAO                                    = 10        #% = 10% *(total_contratado - (D2.1) - (D2.4) - (D2.43) - (fiscais??))
+LIMITE_PERCENT_LOC_VEICULOS                                   = 20        #% = 20% *(total_contratodo)
 
 #limite pessoal
 LIMITE_PESSOAL_VEREADOR =  225
-LIMITE_PESSOAL_PREFEITO =  450
+LIMITE_PESSOAL_PREFEITO =  450 
 
 # Tipo de doacao
 TIPO_DOACAO_FINANCEIRA = 0
@@ -31,6 +33,11 @@ TIPO_DOACAO_ESTIMAVEL_BENS = 3
 PESSOAL_CONTABIL_CONTRATO = 0
 PESSOAL_CONTABIL_CESSAO = 1
 
+# REGRAS 
+GRUPO_CONTRATACAO_PESSOAL = 'D2.1'
+GRUPO_ALIMENTACAO = 'D2.16'
+GRUPO_CONTRATACAO_S_ADVOCATICIOS = 'D2.42'
+GRUPO_CONTRATACAO_S_CONTABEIS = 'D2.43'
 #------------------------------------------------
 class limites(models.Model):
   
@@ -49,6 +56,7 @@ class Grupo_despesa(models.Model):
   total_pago_fundo_partidario = models.FloatField(null=False, default=0) 
   total_pago_outros_rec = models.FloatField(null=False, default=0) 
   total_nao_pago  = models.FloatField(null=False, default=0) 
+  limite_gastos  = models.FloatField(null=False, default=0) 
 
   def __str__(self):
     return f"{self.codigo} {self.descricao}"
@@ -317,7 +325,7 @@ class Pessoa_contratada(models.Model):
 #------------------------------------------------
 class Despesas(models.Model):
 
-  data = models.DateField(null=False, default='2000-01-01')
+  data = models.DateField(null=False)
   candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, null=False)
   grupo = models.ForeignKey(Grupo_despesa, on_delete = models.CASCADE)
   valor_contratado = models.FloatField(null=False, default=0) 
@@ -326,6 +334,7 @@ class Despesas(models.Model):
   valor_pago_fundo_partidario = models.FloatField(null=False, default=0) 
   valor_pago_outros_rec = models.FloatField(null=False, default=0) 
   valor_nao_pago  = models.FloatField(null=False, default=0) 
+  limite_gastos  = models.FloatField(null=False, default=0) 
 
   def __str__(self):
     return f"{self.candidato}"
