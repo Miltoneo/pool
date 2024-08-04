@@ -93,13 +93,15 @@ class Teto_gastos_Form(ModelForm):
         model = Teto_gasto_cargo
         fields =  "__all__"   
 
+
 #--------------------------------------------------------
 #--------------------------------------------------------
 class MyGrupoDespesaWidget(s2forms.Select2Widget):
-    model= Despesas,
+    model= Grupo_despesa,
     search_fields = [
-        'grupo__icontains',
+        'codigo__icontains',
     ]
+    #queryset= Despesas.objects.all().annotate(sort_order=F('title')).order_by('-sort_order'))
 #--------------------------------------------------------
 #--------------------------------------------------------
 class Pessoa_contrato_Form(ModelForm):
@@ -112,28 +114,6 @@ class Pessoa_contrato_Form(ModelForm):
                     }
         exclude = ('despesa_pessoal', 'valor_total')    
 
-"""
-#-----------------------------------------
-class Despesa_Form(ModelForm):
-    class Meta:
-        model = Despesas
-        fields =  "__all__"   
-        widgets = {
-                    'data': widgets.DateInput(attrs={'type': 'date'}),
-                    }
-        exclude = ('candidato',)    
-
-"""
-
-
-"""
-    def __init__(self, *args, **kwargs):
-        # first call parent's constructor
-        super(Despesa_Form, self).__init__(*args, **kwargs)
-        # there's a `fields` property now
-        self.fields['descricao'].required = False
-
-"""
 
 class Despesa_Form(ModelForm):
     class Meta:
@@ -141,6 +121,21 @@ class Despesa_Form(ModelForm):
         fields =  ('data','grupo','valor_contratado','valor_estimavel',)  
         widgets = {
                     'data': widgets.DateInput(attrs={'type': 'date'}),
-                    'grupo': MyGrupoDespesaWidget,
+                    #'grupo': MyGrupoDespesaWidget,
+                     'grupo': Select2Widget,
+                    #'grupo' : Select2Widget(queryset= Grupo_despesa.objects.all().order_by('codigo')),   
                     }
-        #exclude = ('codigo','descricao','valor_pago_FEFC','valor_pago_fundo_partidario','valor_pago_outros_rec', 'valor_nao_pago',)    
+
+    """
+    city = forms.ModelChoiceField(
+        queryset=City.objects.all(),
+        label=u"City",
+        widget=ModelSelect2Widget(
+            model=City,
+            search_fields=['name__icontains'],
+            dependent_fields={'country': 'country'},
+            max_results=500,
+        )
+    )
+
+     """
