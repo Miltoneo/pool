@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_table from django_tables2 %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -210,6 +211,7 @@
               <a href="{% url 'financas:teto_gatos_main' %}" class="btn btn-sm btn-primary px-6"> Teto de gastos  </a>
               <a href="{% url 'financas:cadastro_candidato' %}" class="btn btn-sm btn-primary px-6"> CANDIDATO  </a>       
               <a href="{% url 'financas:cadastro_grupo_despesas' %}" class="btn btn-sm btn-primary px-6"> Grupo de Despesas  </a>
+              <a href="{% url 'financas:cadastro_receitas_main_TableView' %}" class="btn btn-sm btn-primary px-6"> Grupo de Receitas  </a>
 
             </div>
           </td>

@@ -1,4 +1,7 @@
 {% load static %}
+{% load render_table from django_tables2 %}
+{% load django_tables2 %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,7 +10,7 @@
     <meta name="google-site-verification" content="bBW6t7so6dAw0kHfRhkAxcaQzosrQinyXFYoojcOWeg" />
 
     <!-- SELECT2 -->
-   <!--     <script type="text/javascript" src="{% static 'jquery-3.7.1.min.js' %}"></script>  -->
+    <!--  <script type="text/javascript" src="{% static 'jquery-3.7.1.min.js' %}"></script>  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     {{ form.media.css }} 
 
@@ -203,11 +206,13 @@
           <td>
             <div class="list-group">
               <a href="{% url 'financas:index' %}" class="btn btn-sm btn-primary px-6"> Home</a>
-              <a href= {% url 'financas:candidato_receitas' candidato_id=request.session.candidato_id %} class="btn btn-sm btn-primary px-6"> Receitas</a>
+              <a href= {% url 'financas:Receitas_main_TableView' %} class="btn btn-sm btn-primary px-6"> Receitas</a>
               <a href="{% url 'financas:despesas_main' %}" class="btn btn-sm btn-primary px-6"> Despesas</a>
               <a href="{% url 'financas:doacoes_main' %}" class="btn btn-sm btn-primary px-6"> Doações pessoa física   </a>
               <a href="{% url 'financas:autofinancia_main' %}" class="btn btn-sm btn-primary px-6"> AutoFinancidamento   </a>
               <a href="{% url 'financas:pessoal_main' %}" class="btn btn-sm btn-primary px-6"> Despesa de pessoal  </a>
+              {#<a href="{% url 'financas:Receitas_main_TableView' %}" class="btn btn-sm btn-primary px-6"> receitas por candidato - teste  </a>#}
+
             </div>
           </td>
         </tr>

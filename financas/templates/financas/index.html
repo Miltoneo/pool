@@ -69,7 +69,7 @@
                   <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ candidato.codigo}}</td>
-                    <td><a href= "{% url 'financas:candidato_receitas' candidato_id=candidato.id %}">{{ candidato.pessoa.nome}}</td>
+                    <td><a href= "{% url 'financas:config_main' candidato_id=candidato.id %}">{{ candidato.pessoa.nome}}</td>
                     <td>{{ candidato.partido.sigla}}</td>
                     <td>{{ candidato.cargo.nome}}</td>  
                     <td>{{ candidato.pessoa.cidade.nome}}</td>

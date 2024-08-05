@@ -295,4 +295,30 @@ def regra_val_limite_loc_veiculos():
     ds_grupo_loc_veiculos.limite_gastos = val_limite_loc_veiculos
     ds_grupo_loc_veiculos.save()
     
+
+#----------------------------------
+# popular conta com grupo de receitas
+#----------------------------------
+def popular_receitas_candidato(request):
     
+    candidato_id = request.session['candidato_id']
+    candidato = Candidato.objects.get(id=candidato_id)
+
+    ds_grupo_receitas = Grupo_receitas.objects.all().order_by('codigo')
+    for grupo_receita in ds_grupo_receitas:
+        receita_candidato, created = Receita_Candidato.objects.get_or_create (candidato = candidato,
+                                                                              receita = grupo_receita,                                                                               
+                                                                                  )
+        if created:
+            receita_candidato.save()
+
+
+
+
+
+
+
+
+
+
+

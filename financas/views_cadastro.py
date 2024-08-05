@@ -8,6 +8,11 @@ from .geral import *
 from .forms import *
 import datetime
 
+# django tables
+from django.views.generic import ListView
+from django_tables2 import SingleTableView
+from .tables import *
+
 import locale
 locale.setlocale(locale.LC_ALL,'')
 
@@ -881,3 +886,95 @@ def tgastos_excluir(request, tgastos_id):
   request.session['msg_status'] = 'exclusão com sucesso!!!'
 
   return redirect('financas:teto_gatos_main') 
+
+#----------------------------------------------------------
+# CADASTRO ITEM DE RECEITAS
+#---------------------------------------------------------
+
+class cadastro_receitas_main_TableView( SingleTableView):
+    model = Grupo_receitas
+    queryset = Grupo_receitas.objects.all()
+    table_class = Cad_Receitas_Table
+    template_name = 'financas/cadastro/grupo_receitas/grupo_receitas_main.html'
+    paginate_by = 15
+
+    #testing
+    def get_context_data(self):
+        context = super().get_context_data()
+
+        context["msg"] = self.request.session['msg_status']
+        context["ano_fiscal"] = self.request.session['ano_fiscal']
+        return context
+
+#------------------------------------------------------
+def grupo_receitas_incluir(request):
+  
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  if request.POST: 
+      form = Grupo_receitas_Form(request.POST)    
+
+      if form.is_valid():
+        form.save()
+   
+        request.session['msg_status'] = 'Inclusão com sucesso!'
+        return redirect('financas:cadastro_receitas_main_TableView')
+      else:
+        request.session['msg_status'] = 'Falha na inclusão !'
+        return redirect('financas:cadastro_receitas_main_TableView')
+
+  else:
+    
+    template = loader.get_template('financas/cadastro/grupo_receitas/grupo_receitas_editar_incluir.html')
+    form = Grupo_receitas_Form( )  
+
+    context = {
+                'form'       : form,
+                'user'       : request.user,
+                'msg'        : msg
+              }
+    return HttpResponse(template.render(context, request))
+  
+#------------------------------------------------------
+def grupo_receitas_editar(request, grupo_receitas_id):
+
+  msg =  request.session['msg_status']
+  ano_fiscal = request.session['ano_fiscal']
+
+  gpo_receitas = Grupo_receitas.objects.get(id=grupo_receitas_id)
+  if request.method == 'POST':
+
+    form = Grupo_receitas_Form(request.POST, instance = gpo_receitas)
+    if form.is_valid():
+      form.save()
+      request.session['msg_status'] = 'Edição com sucesso!!!'
+      return redirect('financas:cadastro_receitas_main_TableView')     
+
+    else:
+      request.session['msg_status'] = 'Falha na edição dos dados'
+      return redirect('financas:cadastro_receitas_main_TableView')    
+    
+  else:
+
+    form = Grupo_receitas_Form(instance = gpo_receitas)
+    template = loader.get_template('financas/cadastro/grupo_receitas/grupo_receitas_editar_incluir.html')
+    context = {
+                'ano_fiscal'  : ano_fiscal,
+                'form'        : form,
+                'msg'         : msg,
+                'user'        : request.user,
+              }
+  
+    return HttpResponse(template.render(context, request))
+  
+#------------------------------------------------------
+def grupo_receitas_excluir(request, grupo_receitas_id):
+  
+  msg =  request.session['msg_status']
+
+  ds = Grupo_receitas.objects.get(id = grupo_receitas_id)
+  ds.delete()
+  request.session['msg_status'] = 'exclusão com sucesso!!!'
+
+  return redirect('financas:cadastro_receitas_main_TableView') 

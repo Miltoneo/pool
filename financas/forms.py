@@ -102,7 +102,7 @@ class MyGrupoDespesaWidget(s2forms.Select2Widget):
         'codigo__icontains',
     ]
     #queryset= Despesas.objects.all().annotate(sort_order=F('title')).order_by('-sort_order'))
-#--------------------------------------------------------
+
 #--------------------------------------------------------
 class Pessoa_contrato_Form(ModelForm):
     class Meta:
@@ -139,3 +139,17 @@ class Despesa_Form(ModelForm):
     )
 
      """
+    
+#-----------------------------------------
+class Grupo_receitas_Form(ModelForm):
+    class Meta:
+        model = Grupo_receitas
+        fields =  ('codigo', 'descricao')   
+        #exclude = ('receita', 'despesa')        
+
+#-----------------------------------------
+class Receita_Candidato_Form(ModelForm):
+    class Meta:
+        model = Receita_Candidato
+        fields =  ('total_financeiro', 'total_estimavel', 'total', )   
+        #exclude = ('receita', 'despesa')      

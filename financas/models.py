@@ -61,7 +61,8 @@ class Grupo_despesa(models.Model):
 
   def __str__(self):
     return f"{self.codigo} {self.descricao}"
-  
+
+ 
 #------------------------------------------------
 class Cidade(models.Model):
 
@@ -340,3 +341,25 @@ class Despesas(models.Model):
   def __str__(self):
     return f"{self.candidato}"
   
+
+#-------------------------------------------------
+class Grupo_receitas(models.Model):
+  
+  codigo =  models.CharField(max_length=20, null=False, unique=True) 
+  descricao = models.CharField(max_length=255, null=False, default="")
+
+  def __str__(self):
+    return f"{self.codigo} {self.descricao}"
+    
+#-------------------------------------------------
+class Receita_Candidato(models.Model):
+  
+  candidato = models.ForeignKey(Candidato, on_delete = models.CASCADE, null=False)
+  receita = models.ForeignKey(Grupo_receitas, on_delete = models.CASCADE, null=False)
+
+  total_financeiro = models.FloatField(null=False, default=0) 
+  total_estimavel = models.FloatField(null=False, default=0) 
+  total  = models.FloatField(null=False, default=0) 
+
+  def __str__(self):
+    return f"{self.receita.codigo} {self.candidato.pessoa.nome}"

@@ -1,0 +1,45 @@
+
+{% extends "financas/cadastro/template_menu_cadastro.html" %}
+{% load render_table from django_tables2 %}
+
+{% block title %}
+  Cadastro de receitas
+{% endblock %}
+
+{% block titulo %}
+  <div> <a class="msg"> msg: {{ msg }}</a> </div>
+  <h4>Eleições: {{ano_fiscal}}</h4>
+  <h1>Cadastro: Grupo de Receitas</h1>
+
+{% endblock %}
+
+
+{% block content %}
+  <div>
+      <!-- area vavegaçao lateral -->
+
+      <!-- main -->
+    <div class="main">
+
+      <!-- barra ações-->
+      <div>
+        <a href= "{% url 'financas:grupo_receitas_incluir' %}"> Cadastrar grupo de receitas </a>
+        <!--<a href="http://www.google.co.uk/" onclick="return (confirm('Follow this link?'))">Google</a>-->
+
+      </div>
+        <table> 
+          <tr>
+            <td>
+
+                {% render_table table %}
+
+            </td>
+          </tr>
+        </table>
+
+        <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© copyright cabatatu</div>
+    </div>
+  </div>
+
+
+{% endblock %}

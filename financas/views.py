@@ -67,11 +67,14 @@ def index(request):
 
     return HttpResponse(template.render(context, request))
 
+
 #----------------------------------------------------------
 # UTILIZA COMO ENTRADA PARA PREPARAR AMBIENTE
 #---------------------------------------------------------
-def candidato_receitas(request, candidato_id):
+
+def config_main(request, candidato_id):
   
+  # INICIO INICIALIZAÇÃO
   msg =  request.session['msg_status']
   ano_fiscal = request.session['ano_fiscal']
   request.session['candidato_id'] =   candidato_id
@@ -81,24 +84,18 @@ def candidato_receitas(request, candidato_id):
   candidato= Candidato.objects.get(id=candidato_id)
   pessoa = Pessoa.objects.get(id=candidato.pessoa.id)
 
-  # RECUPERA DOADOR PARA AUTOFINANCIAMENTO
-  doador = Doador.objects.get(pessoa=pessoa, candidato=candidato)
-  request.session['auto_doador_id'] =   doador.id
+  # recupera o doador para o autofinanciamento
+  # nota: o doador para auto_financ é criado durante o cadastro do candidato
+  request.session['auto_doador_id']  = Doador.objects.get(pessoa=pessoa, candidato=candidato).id
 
-  # VERIFICA DESPESA DE PESSOAL
-  despesa_pessoal = Despesa_pessoal.objects.get_or_create(candidato=candidato)
-  #despesas = Despesas.objects.get_or_create(candidato=candidato)
+  # cria tabelas
+  Despesa_pessoal.objects.get_or_create(candidato=candidato)
 
-  template = loader.get_template('financas/receitas/receitas.html')
-  context = {
-              'ano_fiscal'        : ano_fiscal,
-
-              'msg'               : msg,
-              'user'              : request.user,
-            }
+  # popular a tabela Receita_Candidato com os grupos de receitas cadastrados
+  popular_receitas_candidato(request)
   
-  return HttpResponse(template.render(context, request))
-
+  # vai para menu recitas
+  return redirect('financas:receitas_main')
 
 #----------------------------------------------------------
 # Doações PESSOA FÍSICA

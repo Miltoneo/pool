@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django_extensions', 
     'django_select2',  # 
-    'jquery', #
+    'jquery', 
+    'django_tables2'#
 
 ]
 
@@ -74,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },
     },

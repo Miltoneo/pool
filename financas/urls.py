@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.contrib.auth import views as auth_views
-from . import views
-from . import views_cadastro, views_despesas
+
+from . import views, views_cadastro, views_despesas, views_receitas
+
+from .views_receitas import *
 
 app_name='financas'
 
@@ -10,6 +12,13 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('main/', views.index, name='index'),
 
+  
+  # menu
+    path('config_main/<int:candidato_id>/', views.config_main, name='config_main'),
+
+  #---------------------------------------------------------------------------------------
+  # VIEWS_CADASTRO
+  #---------------------------------------------------------------------------------------
     path('cadastro_main/', views_cadastro.cadastro_main, name='cadastro_main'),
     # cadastro cidade
     path('cadastro_cidade/', views_cadastro.cadastro_cidade, name='cadastro_cidade'),
@@ -53,17 +62,20 @@ urlpatterns = [
     path('doador_excluir/<int:doador_id>/', views_cadastro.doador_excluir, name='doador_excluir'),
 
   # cadastro TETO DE GASTOS
+    path('teto_gatos_main/', views_cadastro.teto_gatos_main, name='teto_gatos_main'),
     path('tgastos_incluir/', views_cadastro.tgastos_incluir, name='tgastos_incluir'),
     path('tgastos_editar/<int:tgastos_id>/', views_cadastro.tgastos_editar, name='tgastos_editar'),
     path('tgastos_excluir/<int:tgastos_id>/', views_cadastro.tgastos_excluir, name='tgastos_excluir'),
 
-  # Menu teto gastos
-    path('teto_gatos_main/', views_cadastro.teto_gatos_main, name='teto_gatos_main'),
+  # Menu RECEITAS
+    path("cadastro_receitas_main_TableView/", views_cadastro.cadastro_receitas_main_TableView.as_view(), name='cadastro_receitas_main_TableView'),
+    path('grupo_receitas_incluir/', views_cadastro.grupo_receitas_incluir, name='grupo_receitas_incluir'),
+    path('grupo_receitas_editar/<int:grupo_receitas_id>/', views_cadastro.grupo_receitas_editar, name='grupo_receitas_editar'),
+    path('grupo_receitas_excluir/<int:grupo_receitas_id>/', views_cadastro.grupo_receitas_excluir, name='grupo_receitas_excluir'),
+
   #---------------------------------------------------------------------------------------
   # VIEWS
   #---------------------------------------------------------------------------------------
-  # Menu receitas
-    path('candidato_receitas/<int:candidato_id>/', views.candidato_receitas, name='candidato_receitas'),
 
   # Menu doacoes
     path('doacoes_main/', views.doacoes_main, name='doacoes_main'),
@@ -93,7 +105,7 @@ urlpatterns = [
     path('desp_pessoal_excluir/<int:doacao_id>/', views.desp_pessoal_excluir, name='desp_pessoal_excluir'),
 
   #---------------------------------------------------------------------------------------
-  # VIEWS.DESPESAS
+  # VIEWS_DESPESAS
   #---------------------------------------------------------------------------------------
     path('despesas_main/', views_despesas.despesas_main, name='despesas_main'),
     path('despesas_situacao/', views_despesas.despesas_situacao, name='despesas_situacao'),
@@ -105,5 +117,14 @@ urlpatterns = [
     path('despesa_atualiza_resumo/', views_despesas.despesa_atualiza_resumo, name='despesa_atualiza_resumo'),
     path('grupo_despesa_editar/<int:grupo_id>/', views_despesas.grupo_despesa_editar, name='grupo_despesa_editar'),
 
+   #---------------------------------------------------------------------------------------
+  # VIEWS_RECEITAS
+  #---------------------------------------------------------------------------------------   
+
+  # Menu receitas
+    path('receitas_main/', views_receitas.receitas_main, name='receitas_main'),
+    path('receitas_atualiza_resumo/', views_receitas.receitas_atualiza_resumo, name='receitas_atualiza_resumo'),
+    path('receitas_editar/<int:receita_id>/', views_receitas.receitas_editar, name='receitas_editar'),
+    path("Receitas_main_TableView/", Receitas_main_TableView.as_view(), name='Receitas_main_TableView'),
 ]
  
