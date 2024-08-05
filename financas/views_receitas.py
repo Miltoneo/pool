@@ -18,6 +18,7 @@ import locale
 locale.setlocale(locale.LC_ALL,'')
 
 #from https://django-tables2.readthedocs.io/en/latest/pages/installation.html
+# teste
 class ReceitastView(ListView):
     model = Grupo_receitas
     template_name = 'financas/receitas/receitas_main.html'  
@@ -40,6 +41,8 @@ class ReceitasTableView2( SingleTableView):
 
 class Receitas_main_TableView( SingleTableView):
        
+    paginate_by = 15
+
     def get_table_class(self):
         return Receita_Candidato_Table 
     
@@ -77,9 +80,9 @@ def receitas_main(request):
 #------------------------------------------------------
 def receitas_atualiza_resumo(request):
   
-  request.session['msg_status'] = chk_despesa_pessoal(request)
+  #request.session['msg_status'] = chk_despesa_pessoal(request)
 
-  return redirect('financas:pessoal_main')
+  return redirect('financas:receitas_main')
 
 #------------------------------------------------------
 def receitas_editar(request, receita_id):
